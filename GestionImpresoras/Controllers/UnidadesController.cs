@@ -122,7 +122,6 @@ namespace GestionImpresoras.Controllers
             return _contexto.Unidades.Any(e => e.Id == id);
         }
 
-
         //Endpoints para el borrado (Delete) de registros
         [HttpGet]
         public async Task<IActionResult> Borrar(int? id)
