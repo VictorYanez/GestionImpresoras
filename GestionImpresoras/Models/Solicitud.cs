@@ -17,9 +17,6 @@ namespace GestionImpresoras.Models
         [Display(Name = "EstadoSolicitud")]
         public virtual EstadoSolicitud EstadoSolicitud { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
 
-        //[Display(Name = "Color")]
-        //public bool EsdeColor { get; set; }
-
         [Display(Name = "Fecha Sol.")]
         [Column(TypeName = "Date")]
         public DateTime? FechaSolicitud { get; set; }  //El signo ? en DateTime expresa que puede almacenar nulo 

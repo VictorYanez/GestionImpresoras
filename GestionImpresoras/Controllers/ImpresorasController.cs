@@ -247,7 +247,7 @@ namespace GestionImpresoras.Controllers
             {
                 return RedirectToAction("Noencontrado", "Home");
             }
-            var existe = _contexto.Impresoras.Any(e => e.Id == id);      
+            var existe = _contexto.Impresoras.Any(e => e.Id == id);
             if (!existe)
             {
                 return RedirectToAction("Noencontrado", "Home");
@@ -256,7 +256,7 @@ namespace GestionImpresoras.Controllers
             ViewBag.MarcaId = new SelectList(_contexto.Marcas, "Id", "Nombre", impresoraEdit.MarcaId);
             ViewBag.ModeloId = new SelectList(_contexto.Modelos.Where(m => m.MarcaId == impresoraEdit.MarcaId), "Id", "Nombre", impresoraEdit.ModeloId);
             ViewBag.EstadoId = new SelectList(_contexto.Estados, "Id", "Nombre", impresoraEdit.EstadoId);
-           
+
             ViewBag.AreaId = new SelectList(_contexto.Areas, "Id", "Nombre", impresoraEdit.AreaId);
             ViewBag.UnidadId = new SelectList(_contexto.Unidades.Where(a => a.AreaId == impresoraEdit.AreaId), "Id", "Nombre", impresoraEdit.UnidadId);
             ViewBag.InstitucionId = new SelectList(_contexto.Instituciones, "Id", "Nombre", impresoraEdit.InstitucionId);
