@@ -29,6 +29,7 @@ namespace GestionImpresoras.Data
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Institucion> Instituciones { get; set; }
         public DbSet<Impresora> Impresoras { get; set; }
+        public DbSet<Color> Colores { get; set; }
 
 
 

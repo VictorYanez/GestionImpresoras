@@ -1,7 +1,5 @@
 ﻿@using GestionImpresoras.Models;
-@using GestionImpresoras.ViewModels;
 @model Modelo //ModeloViewModel cuando hice uso de ViewModel  
-
 @{
     ViewData["Title"] = "Crear nuevo Modelo";
 }
@@ -17,13 +15,18 @@
         </select>
         <span asp-validation-for="Marca" class="text-danger"></span>
     </div>
-    <div class="mb-3">
+    <div class="mb-3 form-group">
         <label asp-for="Nombre" class="form-label">Nombre</label>
         <input type="text" asp-for="Nombre" class="form-control" placeholder="Ingrese el Nombre"/>
         <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3 form-group form-check">
+    <input asp-for="EsdeColor" type="checkbox" class="form-check-input" />
+    <label class="form-check-label" asp-for="EsdeColor">Es de color</label>
+    </div>
+
+    <div class="mb-3 form-group">
         <label asp-for="Descripcion" class="form-label">Descripción</label>
         <input type="text" asp-for="Descripcion" class="form-control" placeholder="Ingrese la Descripción" />
         <span asp-validation-for="Descripcion" class="text-danger"></span>
@@ -48,7 +51,6 @@
     </div>
 *@
 </form>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

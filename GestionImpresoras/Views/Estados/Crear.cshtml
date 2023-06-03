@@ -27,9 +27,8 @@
     <a class="btn btn-secondary" asp-action="Index">Cancelar</a>
 
 </form>
-
-@*
 @section Scripts {
-    <partial name="_Validation Script Partial" />
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
-*@

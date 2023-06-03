@@ -83,7 +83,7 @@ namespace GestionImpresoras.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(int id, [Bind("Id,MarcaId,Nombre,Descripcion")] Modelo modelo)
+        public async Task<IActionResult> Editar(int id, [Bind("Id,MarcaId,Nombre,Descripcion,EsdeColor")] Modelo modelo)
         {
             if (id != modelo.Id)
             {

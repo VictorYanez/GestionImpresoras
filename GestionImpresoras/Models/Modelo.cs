@@ -15,8 +15,8 @@ namespace GestionImpresoras.Models
         [Display(Name = "Marca")]
         public virtual Marca Marca { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
 
-        //[Display(Name = "Color")]
-        //public bool EsdeColor { get; set; }
+        [Display(Name = "A Color")]
+        public bool EsdeColor { get; set; }
 
         [StringLength(200)]
         public string Descripcion { get; set; }
