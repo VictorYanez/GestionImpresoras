@@ -15,16 +15,21 @@
     <div class="mb-3 form-group">
         <label asp-for="Marca.Nombre" class="form-label">Marca</label>
         <input type="text" asp-for="Marca.Nombre" class="form-control" readonly />
-        <span asp-validation-for="Marca.Nombre" class="text-danger"></span>  
+        <span asp-validation-for="Marca.Nombre" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3 form-group">
         <label asp-for="Nombre" class="form-label">Nombre</label>
         <!-- Utilizo la opción readonly para no permitir cambiar el contenido de los campos -->
         <input type="text" asp-for="Nombre" class="form-control" readonly />
         <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
-    <div class="mb-3">
+    <div class="mb-3 form-group">
+        <label asp-for="EsdeColor" class="form-label">Es de color</label>
+        <input type="text" asp-for="EsdeColor" class="form-control" readonly value="@(Model.EsdeColor ? "Sí" : "No")" />
+        <span asp-validation-for="EsdeColor" class="text-danger"></span>
+    </div>
+    <div class="mb-3 form-group">
         <label asp-for="Descripcion" class="form-label">Descripcion</label>
         <input type="text" asp-for="Descripcion" class="form-control" readonly />
         <span asp-validation-for="Descripcion" class="text-danger"></span>

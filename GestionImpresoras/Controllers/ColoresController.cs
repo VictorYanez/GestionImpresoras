@@ -48,22 +48,22 @@ namespace GestionImpresoras.Controllers
             }
             else
             {
-                var areaDisplay = _contexto.Areas.Find(id);
-                if (areaDisplay == null)
+                var colorDisplay = _contexto.Colores.Find(id);
+                if (colorDisplay == null)
                 {
                     return RedirectToAction("Noencontrado", "Home");
                 }
-                return View(areaDisplay);
+                return View(colorDisplay);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(Area area)
+        public async Task<IActionResult> Editar(Color color)
         {
             if (ModelState.IsValid)
             {
-                _contexto.Areas.Update(area);
+                _contexto.Colores.Update(color);
                 await _contexto.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));    //  RedirectToAction("Index")
             }
@@ -79,25 +79,25 @@ namespace GestionImpresoras.Controllers
             }
             else
             {
-                var areaDisplay = _contexto.Areas.Find(id);
-                if (areaDisplay == null)
+                var colorDisplay = _contexto.Colores.Find(id);
+                if (colorDisplay == null)
                 {
                     return RedirectToAction("Noencontrado", "Home");
                 }
-                return View(areaDisplay);
+                return View(colorDisplay);
             }
         }
 
         [HttpPost, ActionName("Borrar")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BorrarArea(int? id)
+        public async Task<IActionResult> BorrarColor(int? id)
         {
-            var areaDisplay = await _contexto.Areas.FindAsync(id);
-            if (areaDisplay == null)
+            var colorDisplay = await _contexto.Colores.FindAsync(id);
+            if (colorDisplay == null)
             {
                 return View();
             }
-            else _contexto.Areas.Remove(areaDisplay);
+            else _contexto.Colores.Remove(colorDisplay);
             await _contexto.SaveChangesAsync();
             return RedirectToAction(nameof(Index));    //  RedirectToAction("Index")
         }
@@ -111,12 +111,12 @@ namespace GestionImpresoras.Controllers
             }
             else
             {
-                var areaDisplay = _contexto.Areas.Find(id);
-                if (areaDisplay == null)
+                var colorDisplay = _contexto.Colores.Find(id);
+                if (colorDisplay == null)
                 {
                     return RedirectToAction("Noencontrado", "Home");
                 }
-                return View(areaDisplay);
+                return View(colorDisplay);
             }
         }
     }

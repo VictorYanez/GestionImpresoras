@@ -36,8 +36,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXJlYXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Administrador/source/repos/GestionImpresoras/GestionImpresoras/Views/Colores/Borrar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sb3Jlc1xCb3JyYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Administrador/source/repos/GestionImpresoras/GestionImpresoras/Views/Colores/Crear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sb3Jlc1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Administrador/source/repos/GestionImpresoras/GestionImpresoras/Views/Colores/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sb3Jlc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Administrador/source/repos/GestionImpresoras/GestionImpresoras/Views/Colores/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sb3Jlc1xFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Administrador/source/repos/GestionImpresoras/GestionImpresoras/Views/Colores/Index.cshtml]

@@ -22,8 +22,9 @@
     </div>
 
     <div class="mb-3 form-group form-check">
-        <input asp-for="EsdeColor" type="checkbox" class="form-check-input" />
         <label class="form-check-label" asp-for="EsdeColor">Es de color</label>
+        <input asp-for="EsdeColor" type="checkbox" class="form-check-input" />
+        <span asp-validation-for="EsdeColor" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
