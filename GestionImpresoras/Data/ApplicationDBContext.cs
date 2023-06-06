@@ -27,6 +27,8 @@ namespace GestionImpresoras.Data
         public DbSet<Marca> Marcas { get; set; }
         public DbSet<Modelo> Modelos { get; set; }
         public DbSet<Estado> Estados { get; set; }
+        public DbSet<EstadoMtto> EstadoMttos { get; set; }
+        public DbSet<EstadoSolicitud> EstadoSolicitudes { get; set; }
         public DbSet<Institucion> Instituciones { get; set; }
         public DbSet<Impresora> Impresoras { get; set; }
         public DbSet<Color> Colores { get; set; }
