@@ -1,0 +1,67 @@
+﻿@using GestionImpresoras.Models;
+@using GestionImpresoras.ViewModels;
+@model Mantenimiento 
+
+@{
+    ViewData["Title"] = "Crear nueva Unidad";
+}
+<h1>Crear Unidad</h1>
+<h5>Se refiere a las Unidades organizativas de la institución </h5>
+<hr />
+    <form asp-action="Crear" asp-controller="Mantenimientos" method="post">
+
+    <!---  Para Lista de Impresoras   -->
+    <div class="mb-3 form-group">
+        <label asp-for="ImpresoraId" class="form-label">Impresora</label>
+        <select class="form-select form-select sm" asp-for="ImpresoraId" asp-items="ViewBag.ImpresoraId">
+        <option > --- Seleccionar Impresora --- </option></select>
+        <span asp-validation-for="ImpresoraId" class="text-danger"></span>
+    </div>
+    <!---  Para Lista de Estado Mantenimiento   -->
+    <div class="mb-3 form-group">
+        <label asp-for="EstadoMttoId" class="form-label">Estado</label>
+        <select class="form-select form-select sm" asp-for="EstadoMttoId" asp-items="ViewBag.EstadoMttoId">
+        <option > --- Seleccionar Estado --- </option></select>
+        <span asp-validation-for="EstadoMttoId" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="FechaSolicitud" class="form-label">Fecha Solicitud</label>
+        <input type="text" asp-for="FechaSolicitud" class="form-control" placeholder="Ingrese Fecha Solicitud" />
+        <span asp-validation-for="FechaSolicitud" class="text-danger"></span>
+    </div> 
+
+    <div class="mb-3">
+        <label asp-for="FechaMantenimiento" class="form-label">Fecha Mantenimiento</label>
+        <input type="text" asp-for="FechaMantenimiento" class="form-control" placeholder="Ingrese Fecha Mantenimiento"/>
+        <span asp-validation-for="FechaMantenimiento" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EsLocal" class="form-label">Tipo Mantenimiento</label>
+        <input type="text" asp-for="EsLocal" class="form-control" placeholder="Ingrese la Descripción" />
+        <span asp-validation-for="EsLocal" class="text-danger"></span>
+    </div> 
+
+    <button type="submit" class="btn btn-primary"><i class="bi bi-send-plus"></i> Enviar</button>
+    <a class="btn btn-secondary" asp-action="Index"><i class="bi bi-stop-circle"> Cancelar</i></a>
+
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <!---------------  Codigo para actualización dinamica  ------------->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#AreaId").change(function () {
+                $.get("/Unidades/GetUnidades", { MarcaId: $("#AreaId").val() }, function (data) {
+                    $("#UnidadId").empty();
+                    $.each(data, function (index, row) {
+                        $("#UnidadId").append("<option value='" + row.id + "'>" + row.nombre + "</option>")
+                    });
+                });
+            })
+        });
+    </script>
+}

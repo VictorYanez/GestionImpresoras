@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GestionImpresoras.Models
 {
-    [Table("Institucion")]
+    [Table("Mantenimiento")]
     public class Mantenimiento
     {
         [Key]
@@ -14,18 +14,18 @@ namespace GestionImpresoras.Models
         public virtual Impresora Impresora { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
 
         public int EstadoMttoId { get; set; }
-        [Display(Name = "EstadoSolicitud")]
-        public virtual EstadoSolicitud EstadoSolicitud { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
+        [Display(Name = "EstadoMtto")]
+        public virtual EstadoMtto EstadoMtto { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
 
         [Display(Name = "Fecha Sol.")]
         [Column(TypeName = "Date")]
         public DateTime? FechaSolicitud { get; set; }  //El signo ? en DateTime expresa que puede almacenar nulo 
 
-        [Display(Name = "Fecha Real.")]
+        [Display(Name = "Fecha Mtto.")]
         [Column(TypeName = "Date")]
-        public DateTime? FechaRealizar { get; set; }  //El signo ? en DateTime expresa que puede almacenar nulo 
+        public DateTime? FechaMantenimiento { get; set; }  //El signo ? en DateTime expresa que puede almacenar nulo 
 
-        [Display(Name = "Local")]
+        [Display(Name = "EsLocal")]
         public bool EsLocal { get; set; }
 
     }

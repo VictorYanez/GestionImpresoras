@@ -47,9 +47,9 @@ namespace GestionImpresoras.Models
         [Display(Name = "Institucion")]
         public virtual Institucion Institucion { get; set; } = null!;
 
-        //[Display(Name = "Fecha Reg.")]
-        //[Column(TypeName = "Date")]
-        //public DateTime? FechaRegistro { get; set; }  //El signo ? en DateTime expresa que puede almacenar nulo 
+        [Display(Name = "Fecha Reg.")]
+        [Column(TypeName = "Date")]
+        public DateTime? FechaRegistro { get; set; }  //El signo ? expresa que puede almacenar nulo 
 
         [StringLength(200)]
         public string Caracteristicas { get; set; }

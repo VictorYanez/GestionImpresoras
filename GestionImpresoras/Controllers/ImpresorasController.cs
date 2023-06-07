@@ -70,7 +70,6 @@ namespace GestionImpresoras.Controllers
             ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
             ViewBag.UnidadId = await _contexto.Unidades.Where(a => a.AreaId == 0).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
 
-
             return View();
 
             //var marcas = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
