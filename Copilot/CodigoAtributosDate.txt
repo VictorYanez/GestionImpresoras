@@ -1,0 +1,48 @@
+FechaSolicitud 
+FechaMantenimiento
+EsLocal 
+
+
+@item.FechaSolicitud?.ToString("dd/MM/yyyy")
+
+@model GestionImpresoras.Models.Mantenimiento
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<h1>Editar</h1>
+
+<h4>Mantenimiento</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Editar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ImpresoraId" class="control-label"></label>
+                <select asp-for="ImpresoraId" class ="form-control" asp-items="ViewBag.ImpresoraId"></select>
+                <span asp-validation-for="ImpresoraId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstadoMttoId" class="control-label"></label>
+                <select asp-for="EstadoMttoId" class ="form-control" asp-items="ViewBag.EstadoMttoId"></select>
+                <span asp-validation-for="EstadoMttoId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaSolicitud" class="control-label"></label>
+                <input type="date" asp-for="FechaSolicitud" class="form-control" />
+                <span asp-validation-for="<EUGPSCoordinates>FechaSolicitud</EUGPSCoordinates>" class="<EUGPSCoordinates>text-danger</EUGPSCoordinates>"></span>
+            </div>
+            <div class="<EUGPSCoordinates>form-group</EUGPSCoordinates>">
+                <label asp-for="<EUGPSCoordinates>FechaMantenimiento</EUGPSCoordinates>" class="<EUGPSCoordinates>control-label</EUGPSCoordinates>"></label>
+                <input type="<EUGPSCoordinates>date</EUGPSCoordinates>" asp-for="<EUGPSCoordinates>FechaMantenimiento</EUGPSCoordinates>" class="<EUGPSCoordinates>form-control</EUGPSCoordinates>" />
+                <span asp-validation-for="<EUGPSCoordinates>FechaMantenimiento</EUGPSCoordinates>" class="<EUGPSCoordinates>text-danger</EUGPSCoordinates>"></span>
+            </div>
+            <div class="<EUGPSCoordinates>form-group</EUGPSCoordinates>">
+                <div class="<EUGPSCoordinates>form-check</EUGPSCoordinates>">
+                    <input type="<EUGPSCoordinates>checkbox</EUGPSCoordinates>" asp-for="<EUGPSCoordinates>EsLocal</EUGPSCoordinates>" class="<EUGPSCoordinates>form-check-input</EUGPSCoordinates>" />
+                    <label asp-for="<EUGPSCoordinates>EsLocal</EUGPSCoordinates>" class="<EUGPSCoordinates>form-check-label</EUGPSCoordinates>">¿Es Mantenimiento Local?</label>
+                </div>
+                <span asp-validation-for="<EUGPSCoordinates>EsLocal</EUGPSCoordinates>" class="<EUGPSCoordinates>text-danger</EUGP

@@ -40,7 +40,6 @@ namespace GestionImpresoras.Controllers
 
             ViewBag.ImpresoraId = await _contexto.Impresoras.Select(i => new SelectListItem { Value = i.Id.ToString(), Text = i.CodigoActivoFijo }).ToListAsync();
             ViewBag.EstadoMttoId = await _contexto.EstadoMttos.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-
             return View();
         }
 
