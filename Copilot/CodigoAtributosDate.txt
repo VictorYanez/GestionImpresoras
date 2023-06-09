@@ -46,3 +46,147 @@ EsLocal
                     <label asp-for="<EUGPSCoordinates>EsLocal</EUGPSCoordinates>" class="<EUGPSCoordinates>form-check-label</EUGPSCoordinates>">¿Es Mantenimiento Local?</label>
                 </div>
                 <span asp-validation-for="<EUGPSCoordinates>EsLocal</EUGPSCoordinates>" class="<EUGPSCoordinates>text-danger</EUGP
+
+
+----------------------------------------------------------------------------------------------------------------
+@model GestionImpresoras.Models.Mantenimiento
+
+@{
+    ViewData["Title"] = "Borrar";
+}
+
+<h1>Borrar</h1>
+
+<h3>¿Estás seguro de que quieres borrar este elemento?</h3>
+<div>
+    <h4>Mantenimiento</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImpresoraId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ImpresoraId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EstadoMttoId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EstadoMttoId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaSolicitud)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FechaSolicitud)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaMantenimiento)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FechaMantenimiento)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EsLocal)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EsLocal)
+        </dd>
+    </dl>
+
+    <form asp-action="Borrar">
+
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Borrar" class="btn btn-danger" /> |
+        <a asp-action="Index">Volver a la lista</a>
+    </form>
+</div>
+
+------------------------------------------------------------------------------------------
+
+
+[HttpGet]
+public async Task<IActionResult> Borrar(int? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+
+    var mantenimiento = await _contexto.Mantenimientos
+        .FirstOrDefaultAsync(m => m.Id == id);
+    if (mantenimiento == null)
+    {
+        return NotFound();
+    }
+
+    return View(mantenimiento);
+}
+
+[HttpPost, ActionName("Borrar")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> BorrarConfirmado(int id)
+{
+    var mantenimiento = await _contexto.Mantenimientos.FindAsync(id);
+    _contexto.Mantenimientos.Remove(mantenimiento);
+    await _contexto.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+}
+
+[HttpGet]
+public async Task<IActionResult> Editar(int? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+
+    var mantenimiento = await _contexto.Mantenimientos.FindAsync(id);
+    if (mantenimiento == null)
+    {
+        return NotFound();
+    }
+    return View(mantenimiento);
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Editar(int id, [Bind("Id,ImpresoraId,EstadoMttoId,FechaSolicitud,FechaMantenimiento,EsLocal")] Mantenimiento mantenimiento)
+{
+    if (id != mantenimiento.Id)
+    {
+        return NotFound();
+    }
+
+    if (ModelState.IsValid)
+    {
+        try
+        {
+            _contexto.Update(mantenimiento);
+            await _contexto.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!MantenimientoExists(mantenimiento.Id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+        return RedirectToAction(nameof(Index));
+    }
+    return View(mantenimiento);
+}
+
+private bool MantenimientoExists(int id)
+{
+    return _contexto.Mantenimientos.Any(e => e.Id == id);
+}
+
+---------------------------------------
+
+
+

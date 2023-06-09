@@ -20,7 +20,10 @@ namespace GestionImpresoras.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var listado = await _contexto.Mantenimientos.ToListAsync();
+            var listado = await _contexto.Mantenimientos
+                .Include(e => e.EstadoMtto)
+                .Include(i => i.Impresora)
+                .ToListAsync();
             return View(listado);
         }
 

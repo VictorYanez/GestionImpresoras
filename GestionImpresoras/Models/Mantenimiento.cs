@@ -14,7 +14,7 @@ namespace GestionImpresoras.Models
         public virtual Impresora Impresora { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
 
         public int EstadoMttoId { get; set; }
-        [Display(Name = "EstadoMtto")]
+        [Display(Name = "Estado Mtto")]
         public virtual EstadoMtto EstadoMtto { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
 
         [Display(Name = "Fecha Sol.")]

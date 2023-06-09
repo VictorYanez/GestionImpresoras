@@ -10,7 +10,9 @@
     <div class="offset-9 col-3 mb-3">
         <div class="float-right">
             <a asp-action="Crear" asp-controller="Modelos" class="btn btn-success d-block mx-auto btn-lg">
-                <i class="bi bi-file-plus"></i>Nuevo Modelo</a>
+                <i class="bi bi-file-plus"></i>Nuevo Modelo
+
+            </a>
         </div>
     </div>
 </div>
@@ -32,7 +34,7 @@
                                 <th>@Html.DisplayNameFor(m => m.Nombre)</th>
                                 <th>@Html.DisplayNameFor(m => m.Descripcion)</th>
                                 <th>@Html.DisplayNameFor(m => m.Marca)</th>
-                                <th>@Html.DisplayNameFor(m => m.EsdeColor)</th> 
+                                <th>@Html.DisplayNameFor(m => m.EsdeColor)</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -43,8 +45,17 @@
                                     <td>@Html.DisplayFor(m => item.Nombre)</td>
                                     <td>@Html.DisplayFor(m => item.Descripcion)</td>
                                     <td>@Html.DisplayFor(m => item.Marca.Nombre)</td>
-                                    <td>@Html.DisplayFor(m => item.EsdeColor)</td>
-
+                                    <td>                                      
+                                        @if (item.EsdeColor)
+                                        {
+                                            <i class="bi bi-printer-fill text-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-printer text-muted"></i>
+                                        }
+                                          @(item.EsdeColor ? "Sí" : "No")
+                                    </td>
                                     <td>
                                         <a class="btn btn-primary" asp-action="Editar" asp-route-id="@item.Id">
                                             <i class="bi bi-pencil"></i> Editar
@@ -71,31 +82,31 @@
 </div>
 
 @section Scripts{
-    <script>
-        $(document).ready(function () {
-            //Llamar a datatable
-            $('#tablaImpresoras').DataTable({
-                language: {
-                    "decimal": "",
-                    "emptyTable": "No hay información",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                    "infoPostFix": "",
-                    "thousands": ",",
-                    "lengthMenu": "Mostrar _MENU_ Entradas",
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "search": "Buscar:",
-                    "zeroRecords": "Sin resultados encontrados",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Ultimo",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    }
+<script>
+    $(document).ready(function () {
+        //Llamar a datatable
+        $('#tablaImpresoras').DataTable({
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
                 }
-            });
+            }
         });
-    </script>
+    });
+</script>
 }
