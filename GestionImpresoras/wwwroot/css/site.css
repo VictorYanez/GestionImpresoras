@@ -16,3 +16,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.checkbox-right {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}

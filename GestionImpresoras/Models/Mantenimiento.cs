@@ -25,7 +25,7 @@ namespace GestionImpresoras.Models
         [Column(TypeName = "Date")]
         public DateTime? FechaMantenimiento { get; set; }  //El signo ? en DateTime expresa que puede almacenar nulo 
 
-        [Display(Name = "EsLocal")]
+        [Display(Name = "Es Local")]
         public bool EsLocal { get; set; }
 
     }
