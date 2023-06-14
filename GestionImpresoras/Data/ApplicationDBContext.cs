@@ -31,6 +31,8 @@ namespace GestionImpresoras.Data
         public DbSet<EstadoSolicitud> EstadoSolicitudes { get; set; }
         public DbSet<Institucion> Instituciones { get; set; }
         public DbSet<Mantenimiento> Mantenimientos { get; set; }
+        public DbSet<Solicitud> Solicitudes { get; set; }
+        public DbSet<Medio> Medios { get; set; }
         public DbSet<Impresora> Impresoras { get; set; }
         public DbSet<Color> Colores { get; set; }
 

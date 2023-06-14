@@ -13,6 +13,9 @@ namespace GestionImpresoras.Models
         [Display(Name = "Impresora")]
         public virtual Impresora Impresora { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
 
+        public int ColorId { get; set; }
+        public virtual Color  Color { get; set; } = null!;
+
         public int EstadoSolicitudId { get; set; }
         [Display(Name = "EstadoSolicitud")]
         public virtual EstadoSolicitud EstadoSolicitud { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
@@ -25,10 +28,14 @@ namespace GestionImpresoras.Models
         [Column(TypeName = "Date")]
         public DateTime? FechaEntrega { get; set; }  //El signo ? en DateTime expresa que puede almacenar nulo 
 
-
-        
-        [StringLength(150)]
+        [StringLength(200)]
         public string Solicitante { get; set; }
+
+        public int MedioId { get; set; }
+        public virtual Medio Medio { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
+
+        [StringLength(200)]
+        public string Detalle { get; set; }
 
     }
 }

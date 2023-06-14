@@ -1,39 +1,33 @@
 ﻿@using GestionImpresoras.Models;
-@model Modelo
+@model Medio
 @{
-    ViewData["Title"] = "Detalles del Modelo";
+    ViewData["Title"] = "Borrar Medio";
 }
-<h1>Detalle de Modelo</h1>
-<h3>@Model.Nombre</h3>
+<h1>Borrar Medio</h1>
+<h3>¿Estás seguro de que deseas borrar este Medio?</h3>
 <hr />
-<form asp-controller="Modelos" asp-action="Index" method="get">
-
+<form asp-controller="Medios" asp-action="Borrar" method="post">
     <!-- Definir el id que se envía desde la vista al controlador -->
     <input type="hidden" asp-for="Id" value="@Model.Id" class="Modelo" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <!--- Para Nombre de Marca   -->
-    <div class="mb-3 form-group">
-        <label asp-for="Marca.Nombre" class="form-label">Marca</label>
-        <input type="text" asp-for="Marca.Nombre" class="form-control" readonly />
-        <span asp-validation-for="Marca.Nombre" class="text-danger"></span>
-    </div>
     <div class="mb-3 form-group">
         <label asp-for="Nombre" class="form-label">Nombre</label>
         <!-- Utilizo la opción readonly para no permitir cambiar el contenido de los campos -->
         <input type="text" asp-for="Nombre" class="form-control" readonly />
         <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
+
     <div class="mb-3 form-group">
-        <label asp-for="EsdeColor" class="form-label">Es de color</label>
-        <input type="text" asp-for="EsdeColor" class="form-control" readonly value="@(Model.EsdeColor ? "Sí" : "No")" />
-        <span asp-validation-for="EsdeColor" class="text-danger"></span>
+        <label asp-for="ConRespuesta" class="form-label">¿Con Respuesta? <i class="bi bi-bell-fill text-success"></i></label>
+        <input type="text" asp-for="ConRespuesta" class="form-control" readonly value="@(Model.ConRespuesta ? "Sí" : "No")" />
+        <span asp-validation-for="ConRespuesta" class="text-danger"></span>
     </div>
     <div class="mb-3 form-group">
         <label asp-for="Descripcion" class="form-label">Descripcion</label>
         <input type="text" asp-for="Descripcion" class="form-control" readonly />
         <span asp-validation-for="Descripcion" class="text-danger"></span>
     </div>
-
+    <button type="submit" class="btn btn-primary "><i class="bi bi-eraser"></i> Enviar</button>
     <a class="btn btn-secondary" asp-action="Index"><i class="bi bi-backspace"></i> Cancelar</a>
 </form>
