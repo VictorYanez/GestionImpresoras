@@ -21,7 +21,7 @@ namespace GestionImpresoras.Controllers
             var lista = await _contexto.Solicitudes
                 .Include(x => x.Impresora)
                 .Include(x => x.Color)
-                .Include(x => x.Medio).ToListAsync();
+                .Include(x => x.EstadoSolicitud).ToListAsync();
             return View(lista);
         }
         // GET: Impresoras/Crear
@@ -42,11 +42,17 @@ namespace GestionImpresoras.Controllers
                 ModelState.AddModelError(string.Empty, "La tabla de áreas está vacía");
                 return View();
             }
+            if (!await _contexto.EstadoSolicitudes.AnyAsync())
+            {
+                ModelState.AddModelError(string.Empty, "La tabla de áreas está vacía");
+                return View();
+            }
 
             ///<!----------------------  Segundo Grupo de SelectListItems --------------------------->
-            ViewBag.EstadoId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
-            ViewBag.MarcaId = await _contexto.Colores.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            ViewBag.AreaId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
+            ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
 
             return View();
         }
@@ -78,75 +84,6 @@ namespace GestionImpresoras.Controllers
             return Json(unidades);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]  //Para validar ataques 
-        public async Task<IActionResult> Creater([Bind("Id,CodigoActivoFijo,MarcaId,ModeloId,EstadoId,DireccionIP")] Impresora impresora)
-        {
-            if (ModelState.IsValid)
-            {
-                _contexto.Impresoras.Add(impresora);
-                await _contexto.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult CrearViewModel()
-        {
-            ImpresoraViewModel impresoraViewModel = new()
-            {
-                vImpresora = new Impresora(),
-                vListaEstado = _contexto.Estados.Select(estado => new SelectListItem()
-                {
-                    Text = estado.Nombre,
-                    Value = estado.Id.ToString()
-                }).ToList(),
-                vListaMarca = _contexto.Marcas.Select(marca => new SelectListItem()
-                {
-                    Text = marca.Nombre,
-                    Value = marca.Id.ToString()
-                }).ToList(),
-                vListaModelo = _contexto.Modelos.Select(modelo => new SelectListItem()
-                {
-                    Text = modelo.Nombre,
-                    Value = modelo.Id.ToString()
-                }).ToList(),
-                vListaArea = _contexto.Areas.Select(area => new SelectListItem()
-                {
-                    Text = area.Nombre,
-                    Value = area.Id.ToString()
-                }).ToList(),
-                vListaUnidad = _contexto.Unidades.Select(unidad => new SelectListItem()
-                {
-                    Text = unidad.Nombre,
-                    Value = unidad.Id.ToString()
-                }).ToList()
-            };
-
-            return View(impresoraViewModel);
-        }
-
-        // Codigo Video Hector de Leon 
-        [HttpGet]
-        public ActionResult<List<SelectListItem>> ListaModelos(int marcaId)
-        {
-            List<SelectListItem> listaMarcas = new List<SelectListItem>();
-
-            if (marcaId != 0)
-            {
-                listaMarcas = (from m in _contexto.Modelos
-                               where m.MarcaId == marcaId
-                               select new SelectListItem
-                               {
-                                   Text = m.Nombre,
-                                   Value = m.Id.ToString(),
-
-                               }).ToList();
-            }
-            return View(listaMarcas);
-        }
         // Codigo Video Codigo Oldest & FG
         [HttpGet("{marcaId}/modelo")]
         // Codigo FG  para listado de Modelos en vistas Blazor
@@ -158,32 +95,7 @@ namespace GestionImpresoras.Controllers
                 return await _contexto.Modelos.Where(m => m.MarcaId == marcaId).OrderBy(m => m.Nombre).ToListAsync();
             }
         }
-        // GET: Impresoras/Editar
-        [HttpGet]
-        public async Task<IActionResult> Editar(int? id)
-        {
-            if (id == null)
-            {
-                return RedirectToAction("Noencontrado", "Home");
-            }
 
-            var impresora = await _contexto.Impresoras.FindAsync(id);
-            if (impresora == null)
-            {
-                return RedirectToAction("Noencontrado", "Home");
-            }
-            //  Campos de marcas y Modelos 
-            ViewData["MarcaId"] = new SelectList(_contexto.Marcas, "Id", "Nombre", impresora.MarcaId);
-            ViewData["ModeloId"] = new SelectList(_contexto.Modelos, "Id", "Nombre", impresora.ModeloId);
-            //  Campos de Area y Unidad 
-            ViewData["AreaId"] = new SelectList(_contexto.Areas, "Id", "Nombre", impresora.AreaId);
-            ViewData["UnidadId"] = new SelectList(_contexto.Unidades, "Id", "Nombre", impresora.UnidadId);
-            //  Campos de Estado e Institución  
-            ViewData["EstadoId"] = new SelectList(_contexto.Estados, "Id", "Nombre", impresora.EstadoId);
-            ViewData["InstitucionId"] = new SelectList(_contexto.Instituciones, "Id", "Nombre", impresora.InstitucionId);
-
-            return View(impresora);
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(Impresora impresora)
@@ -244,34 +156,6 @@ namespace GestionImpresoras.Controllers
             ViewBag.Modelos = new SelectList(_contexto.Modelos.Where(m => m.MarcaId == impresora.MarcaId), "Id", "Nombre", impresora.ModeloId);
             ViewBag.Estados = new SelectList(_contexto.Estados, "Id", "Nombre", impresora.EstadoId);
 
-            return View(impresora);
-        }
-
-        //<!----------------    (IA)   --------------------------->
-        // GET: Impresoras/Create
-        public IActionResult Create()
-        {
-            ViewData["EstadoId"] = new SelectList(_contexto.Estados, "Id", "Nombre");
-            ViewData["MarcaId"] = new SelectList(_contexto.Marcas, "Id", "Nombre");
-            ViewData["ModeloId"] = new SelectList(_contexto.Modelos.Where(m => m.MarcaId == 0), "Id", "Nombre");
-            return View();
-        }
-
-        // POST: Impresoras/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CodigoActivoFijo,MarcaId,ModeloId,EstadoId,DireccionIP")] Impresora impresora)
-        {
-            if (ModelState.IsValid)
-            {
-                _contexto.Add(impresora);
-                await _contexto.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["EstadoId"] = new SelectList(_contexto.Estados, "Id", "Nombre", impresora.EstadoId);
-            ViewData["MarcaId"] = new SelectList(_contexto.Marcas, "Id", "Nombre", impresora.MarcaId);
-            ViewData["ModeloId"] = new SelectList(_contexto.Modelos.Where(m => m.MarcaId == impresora.MarcaId), "Id", "Nombre", impresora.ModeloId);
-            ViewBag.ModeloId = new SelectList(_contexto.Modelos.Where(m => m.MarcaId == impresora.MarcaId), "Id", "Nombre", impresora.ModeloId);
             return View(impresora);
         }
 
@@ -349,11 +233,5 @@ namespace GestionImpresoras.Controllers
             return Json(modelos);
         }
 
-        //<!----------------    Copiloto --------------------------->
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
