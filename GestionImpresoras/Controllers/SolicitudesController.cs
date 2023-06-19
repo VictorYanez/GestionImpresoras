@@ -9,10 +9,12 @@ namespace GestionImpresoras.Controllers
     public class SolicitudesController : Controller
     {
         private readonly ApplicationDBContext _contexto;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SolicitudesController(ApplicationDBContext contexto)
+        public SolicitudesController(ApplicationDBContext contexto, IWebHostEnvironment webHostEnvironment)
         {
             this._contexto = contexto;
+            this._webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -63,9 +65,24 @@ namespace GestionImpresoras.Controllers
         {
             if (ModelState.IsValid)
             {
-                _contexto.Update(solicitud);
-                await _contexto.SaveChangesAsync();
-                return RedirectToAction(nameof(Index)); 
+                string rootPath = _webHostEnvironment.WebRootPath;
+                var archivos = HttpContext.Request.Form.Files;
+
+                //  Acciones para almacenar las imagenes 
+                string fileName = Guid.NewGuid().ToString();
+                var pathImageSolicitudes = Path.Combine(rootPath, @"imagenes\solicitudes");
+
+                if (!Directory.Exists(pathImageSolicitudes))
+                {
+                    var extension = Path.GetExtension(archivos[0].FileName);
+                    using (var fileStreams = new FileStream(Path.Combine(pathImageSolicitudes, fileName + extension), FileMode.Create))
+                    {
+                        archivos[0].CopyTo(fileStreams);
+                    }
+                    _contexto.Update(solicitud);
+                    await _contexto.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View();
         }

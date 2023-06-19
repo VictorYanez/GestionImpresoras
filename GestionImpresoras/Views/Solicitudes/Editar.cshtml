@@ -1,13 +1,13 @@
 ﻿@using GestionImpresoras.Models;
-@model Solicitud
+@model Solicitud 
 @{
     ViewData["Title"] = "Crear nueva Solicitud";
 }
 <h1>Crear Solicitud</h1>
 <h5>Se refiere a las Solicitudes de tóner o repuestos para impresoras utilizadas en la institución </h5>
 <hr />
-<form asp-action="Crear" asp-controller="Solicitudes" method="post" enctype="multipart/form-data">
-
+<input type="hidden" asp-for="Id" value="@Model.Id" class="Solicitud" />
+<form asp-action="Editar" asp-controller="Solicitudes" method="post" enctype="multipart/form-data">
     <!---  Para Lista de Impresoras   -->
     <div class="mb-3 form-group">
         <label asp-for="ImpresoraId" class="form-label">Impresora</label>
@@ -44,7 +44,7 @@
         <input type="text" asp-for="Solicitante" class="form-control" placeholder="Ingrese la persona Solicitante" />
         <span asp-validation-for="Solicitante" class="text-danger"></span>
     </div>
-        <!--- Para Lista de Medio Solicitado   -->
+    <!--- Para Lista de Medio Solicitado   -->
     <div class="mb-3 form-group">
         <label asp-for="MedioId" class="form-label">Medio</label>
         <select class="form-select form-select sm" asp-for="MedioId" asp-items="ViewBag.MedioId">
@@ -58,10 +58,10 @@
         <input type="text" asp-for="Detalle" class="form-control" placeholder="Ingrese los Detalles de la solicitud" />
         <span asp-validation-for="Detalle" class="text-danger"></span>
     </div>
-        <!--- Para Imagenes de documentación  -->
+    <!--- Para Imagenes de documentación  -->
     <div class="mb-3 form-group">
         <label asp-for="Detalle" class="form-label">Imagenes para documentar</label>
-        <input type="file" asp-for="Detalle" class="form-control "name="imagenes" id="UpImagenes" placeholder="Ingrese los Detalles de la solicitud" />
+        <input type="file" asp-for="Detalle" class="form-control "  name="imagenes" id="UpImagenes" placeholder="Ingrese los Detalles de la solicitud" />
         <span asp-validation-for="Detalle" class="text-danger"></span>
     </div>
 
