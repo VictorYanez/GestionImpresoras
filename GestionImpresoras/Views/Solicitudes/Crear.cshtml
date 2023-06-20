@@ -7,7 +7,6 @@
 <h5>Se refiere a las Solicitudes de tóner o repuestos para impresoras utilizadas en la institución </h5>
 <hr />
 <form asp-action="Crear" asp-controller="Solicitudes" method="post" enctype="multipart/form-data">
-
     <!---  Para Lista de Impresoras   -->
     <div class="mb-3 form-group">
         <label asp-for="ImpresoraId" class="form-label">Impresora</label>
@@ -26,7 +25,7 @@
     </div>
     <!--- Para Lista de Color Solicitado   -->
     <div class="mb-3 form-group">
-        <label asp-for="ColorId" class="form-label">Estado</label>
+        <label asp-for="ColorId" class="form-label">Color</label>
         <select class="form-select form-select sm" asp-for="ColorId" asp-items="ViewBag.ColorId">
             <option> --- Seleccionar Color --- </option>
         </select>
@@ -46,9 +45,9 @@
     </div>
         <!--- Para Lista de Medio Solicitado   -->
     <div class="mb-3 form-group">
-        <label asp-for="MedioId" class="form-label">Medio</label>
+        <label asp-for="MedioId" class="form-label">Medio de Solicitud</label>
         <select class="form-select form-select sm" asp-for="MedioId" asp-items="ViewBag.MedioId">
-            <option> --- Seleccionar Color --- </option>
+            <option> --- Seleccionar Medio --- </option>
         </select>
         <span asp-validation-for="MedioId " class="text-danger"></span>
     </div>
@@ -60,9 +59,9 @@
     </div>
         <!--- Para Imagenes de documentación  -->
     <div class="mb-3 form-group">
-        <label asp-for="Detalle" class="form-label">Imagenes para documentar</label>
-        <input type="file" asp-for="Detalle" class="form-control "name="imagenes" id="UpImagenes" placeholder="Ingrese los Detalles de la solicitud" />
-        <span asp-validation-for="Detalle" class="text-danger"></span>
+        <label asp-for="UrlImagen" class="form-label">Imagenes para documentar</label>
+        <input type="file" asp-for="UrlImagen" class="form-control "name="UrlImagen" id="UpImagen" placeholder="Ingrese la imagen soporte" />
+        <span asp-validation-for="UrlImagen" class="text-danger"></span>
     </div>
 
     <!---------------  Botones summit y cancelar  ------------->

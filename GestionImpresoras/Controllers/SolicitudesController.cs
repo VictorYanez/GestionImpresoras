@@ -26,7 +26,9 @@ namespace GestionImpresoras.Controllers
                 .Include(x => x.EstadoSolicitud).ToListAsync();
             return View(lista);
         }
-        // GET: Impresoras/Crear
+
+        // Metodos GET POST Solicitudes Crear
+        [HttpGet]
         public async Task<IActionResult> Crear()
         {
             if (!await _contexto.Impresoras.AnyAsync())
@@ -50,7 +52,7 @@ namespace GestionImpresoras.Controllers
                 return View();
             }
 
-            ///<!----------------------  Segundo Grupo de SelectListItems --------------------------->
+            ///<!----------------------  Grupo de SelectListItems --------------------------->
             ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
             ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
             ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
@@ -58,7 +60,6 @@ namespace GestionImpresoras.Controllers
 
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(Solicitud solicitud)
@@ -72,47 +73,55 @@ namespace GestionImpresoras.Controllers
                 string fileName = Guid.NewGuid().ToString();
                 var pathImageSolicitudes = Path.Combine(rootPath, @"imagenes\solicitudes");
 
-                if (!Directory.Exists(pathImageSolicitudes))
+                if (Directory.Exists(pathImageSolicitudes))
                 {
                     var extension = Path.GetExtension(archivos[0].FileName);
                     using (var fileStreams = new FileStream(Path.Combine(pathImageSolicitudes, fileName + extension), FileMode.Create))
                     {
                         archivos[0].CopyTo(fileStreams);
                     }
-                    _contexto.Update(solicitud);
+                    _contexto.Solicitudes.Add(solicitud);
                     await _contexto.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return View();
+ 
+                ///<!----------------------  Grupo de SelectListItems --------------------------->
+                //ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
+                //ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+                //ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+                //ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+                return View();
+            
         }
-
-        // Devolver listados de Modelos correpondientes a dicha marca
-        public JsonResult GetModelos(int marcaId)
+        // Metodos GET POST Solicitudes Editar
+        [HttpGet]
+        public async Task<IActionResult> Editar(int? id)
         {
-            var modelos = _contexto.Modelos.Where(m => m.MarcaId == marcaId).Select(m => new { id = m.Id, nombre = m.Nombre }).ToList();
-            return Json(modelos);
-        }
-
-        // Devolver listados de unidades correpondientes a dicha área
-        public JsonResult GetUnidades(int areaId)
-        {
-            var unidades = _contexto.Unidades.Where(a => a.AreaId == areaId).Select(a => new { id = a.Id, nombre = a.Nombre }).ToList();
-            return Json(unidades);
-        }
-
-        // Codigo Video Codigo Oldest & FG
-        [HttpGet("{marcaId}/modelo")]
-        // Codigo FG  para listado de Modelos en vistas Blazor
-        public async Task<List<Modelo>> WhenMarcaChanged2(int marcaId)
-        {
-            List<SelectListItem> listaMarcas = new List<SelectListItem>();
-
+            if (id == null)
             {
-                return await _contexto.Modelos.Where(m => m.MarcaId == marcaId).OrderBy(m => m.Nombre).ToListAsync();
+                return RedirectToAction("Noencontrado", "Home");
+            }
+            else
+            {
+                var itemDisplay = _contexto.Mantenimientos.Find(id);
+                if (itemDisplay == null)
+                {
+                    return RedirectToAction("Noencontrado", "Home");
+                }
+                else
+                {
+                    var impresoraEdit = await _contexto.Impresoras.FindAsync(id);
+                    ///<!----------------------   Grupo de SelectListItems --------------------------->
+                    ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
+                    ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+                    ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+                    ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+
+                    return View(impresoraEdit);
+                }
             }
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(Impresora impresora)
@@ -126,57 +135,7 @@ namespace GestionImpresoras.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Editar2(int? id)
-        {
-            if (id == null)
-            {
-                return RedirectToAction("Noencontrado", "Home");
-            }
-            var existe = _contexto.Impresoras.Any(e => e.Id == id);
-            if (!existe)
-            {
-                return RedirectToAction("Noencontrado", "Home");
-            }
-            var impresoraEdit = await _contexto.Impresoras.FindAsync(id);
-            ViewBag.MarcaId = new SelectList(_contexto.Marcas, "Id", "Nombre", impresoraEdit.MarcaId);
-            ViewBag.ModeloId = new SelectList(_contexto.Modelos.Where(m => m.MarcaId == impresoraEdit.MarcaId), "Id", "Nombre", impresoraEdit.ModeloId);
-            ViewBag.EstadoId = new SelectList(_contexto.Estados, "Id", "Nombre", impresoraEdit.EstadoId);
-
-            ViewBag.AreaId = new SelectList(_contexto.Areas, "Id", "Nombre", impresoraEdit.AreaId);
-            ViewBag.UnidadId = new SelectList(_contexto.Unidades.Where(a => a.AreaId == impresoraEdit.AreaId), "Id", "Nombre", impresoraEdit.UnidadId);
-            ViewBag.InstitucionId = new SelectList(_contexto.Instituciones, "Id", "Nombre", impresoraEdit.InstitucionId);
-            return View(impresoraEdit);
-        }
-
-        // Acción para mostrar el formulario de creación codigo Copiloto 
-        // Acción para mostrar el formulario de edición
-        public IActionResult EditCop(int id)
-        {
-            var impresora = _contexto.Impresoras.Find(id);
-            if (impresora == null)
-            {
-                return NotFound();
-            }
-
-            ViewBag.MarcaId = _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToList();
-            ViewBag.ModeloId = _contexto.Modelos.Where(m => m.MarcaId == 0).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToList();
-            ///<!----------------------  Segundo Grupo de SelectListItems --------------------------->
-
-            ViewBag.AreaId = _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToList();
-            ViewBag.UnidadId = _contexto.Unidades.Where(a => a.AreaId == 0).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToList();
-            ///<!----------------------  Segundo Grupo de SelectListItems --------------------------->
-            ViewBag.EstadoId = _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToList();
-            ViewBag.InstitucionId = _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToList();
-
-            ViewBag.Marcas = new SelectList(_contexto.Marcas, "Id", "Nombre", impresora.MarcaId);
-            ViewBag.Modelos = new SelectList(_contexto.Modelos.Where(m => m.MarcaId == impresora.MarcaId), "Id", "Nombre", impresora.ModeloId);
-            ViewBag.Estados = new SelectList(_contexto.Estados, "Id", "Nombre", impresora.EstadoId);
-
-            return View(impresora);
-        }
-
-        //Endpoints para el borrado (Delete) de registros
+        //Endpoints GET/POST para el borrado (Delete) de registros
         [HttpGet]
         public async Task<IActionResult> Borrar(int? id)
         {

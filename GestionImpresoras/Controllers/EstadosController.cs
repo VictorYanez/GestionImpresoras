@@ -39,7 +39,6 @@ namespace GestionImpresoras.Controllers
             }
             return View();
         }
-
         [HttpGet]
         public IActionResult Editar(int? id)
         {
@@ -57,7 +56,6 @@ namespace GestionImpresoras.Controllers
                 return View(contacto);
             }
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]  
         public async Task<IActionResult> Editar(Estado estado)
