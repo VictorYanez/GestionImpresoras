@@ -6,7 +6,13 @@
 <h1>Crear Solicitud</h1>
 <h5>Se refiere a las Solicitudes de tóner o repuestos para impresoras utilizadas en la institución </h5>
 <hr />
+<style>
+    .validation-summary-errors {
+        display: none;
+    }
+</style>
 <form asp-action="Crear" asp-controller="Solicitudes" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <!---  Para Lista de Impresoras   -->
     <div class="mb-3 form-group">
         <label asp-for="ImpresoraId" class="form-label">Impresora</label>

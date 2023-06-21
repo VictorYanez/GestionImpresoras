@@ -22,3 +22,7 @@ body {
     flex-direction: row-reverse;
     justify-content: flex-end;
 }
+/*Para tratar de evitar el summary errors - all */ 
+.validation-summary-errors {
+    display: none;
+}

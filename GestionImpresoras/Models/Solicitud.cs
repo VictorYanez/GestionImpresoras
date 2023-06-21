@@ -34,7 +34,6 @@ namespace GestionImpresoras.Models
         public int MedioId { get; set; }
         public virtual Medio Medio { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
 
-
         public string UrlImagen { get; set; }
 
         [StringLength(200)]

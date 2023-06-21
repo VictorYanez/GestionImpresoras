@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "x7Gihe+4LIm7nPQ2GTpeyDhucJuqKF/lonou2LrbG2w=",
+  "Hash": "aYLKeDAwmKDrKoR5DbhcC2epNyamczUh+vfJhhpnA/w=",
   "Source": "GestionImpresoras",
   "BasePath": "_content/GestionImpresoras",
   "Mode": "Default",
@@ -85,6 +85,23 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
+      "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\imagenes\\solicitudes\\024f26c4-730e-4ab3-bdea-d8df3abe9585.jfif",
+      "SourceId": "GestionImpresoras",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\",
+      "BasePath": "_content/GestionImpresoras",
+      "RelativePath": "imagenes/solicitudes/024f26c4-730e-4ab3-bdea-d8df3abe9585.jfif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imagenes\\solicitudes\\024f26c4-730e-4ab3-bdea-d8df3abe9585.jfif"
+    },
+    {
       "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\imagenes\\solicitudes\\032c92a7-bfe0-435f-9ab7-28793d2eeeb1.jpeg",
       "SourceId": "GestionImpresoras",
       "SourceType": "Discovered",
@@ -117,6 +134,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\imagenes\\solicitudes\\14873b3b-4466-4ab5-b65a-f6dbcdb1ea50.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\imagenes\\solicitudes\\35296e0b-f082-4d59-b297-b63c28532eb0.mp4",
+      "SourceId": "GestionImpresoras",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\",
+      "BasePath": "_content/GestionImpresoras",
+      "RelativePath": "imagenes/solicitudes/35296e0b-f082-4d59-b297-b63c28532eb0.mp4",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imagenes\\solicitudes\\35296e0b-f082-4d59-b297-b63c28532eb0.mp4"
     },
     {
       "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\imagenes\\solicitudes\\56379092-5641-4070-924d-54c68d80eaa2.jpeg",
@@ -204,6 +238,23 @@
       "OriginalItemSpec": "wwwroot\\imagenes\\solicitudes\\a9816f67-04d3-4bf3-b6d5-52d9ec86f5a3.jpeg"
     },
     {
+      "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\imagenes\\solicitudes\\ac2f3c9f-938d-4893-88e1-6869e0bf446e.jfif",
+      "SourceId": "GestionImpresoras",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\",
+      "BasePath": "_content/GestionImpresoras",
+      "RelativePath": "imagenes/solicitudes/ac2f3c9f-938d-4893-88e1-6869e0bf446e.jfif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imagenes\\solicitudes\\ac2f3c9f-938d-4893-88e1-6869e0bf446e.jfif"
+    },
+    {
       "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\imagenes\\solicitudes\\ac620664-b4b3-41ac-bfc7-a7af29812a97.jpeg",
       "SourceId": "GestionImpresoras",
       "SourceType": "Discovered",
@@ -236,6 +287,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\imagenes\\solicitudes\\bc0e1298-6bca-4642-9269-46040977701c.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\imagenes\\solicitudes\\cb7a7f4e-2a83-4ffe-9c10-b09e45a93262.jpeg",
+      "SourceId": "GestionImpresoras",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\",
+      "BasePath": "_content/GestionImpresoras",
+      "RelativePath": "imagenes/solicitudes/cb7a7f4e-2a83-4ffe-9c10-b09e45a93262.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imagenes\\solicitudes\\cb7a7f4e-2a83-4ffe-9c10-b09e45a93262.jpeg"
     },
     {
       "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\js\\site.js",
