@@ -88,6 +88,7 @@ namespace GestionImpresoras.Controllers
                     }
 
                     solicitud.UrlImagen = Path.Combine(pathImagesSolicitudes, fileName + extension);
+                    // solicitud.FechaSolicitud = DateTime.Now;
                 }
                     _contexto.Solicitudes.Add(solicitud);
                     await _contexto.SaveChangesAsync();
