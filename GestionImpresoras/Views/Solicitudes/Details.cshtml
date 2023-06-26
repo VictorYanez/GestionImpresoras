@@ -1,13 +1,13 @@
 ﻿@using GestionImpresoras.Models;
-@model Solicitud
+@model Solicitud 
 @{
-    ViewData["Title"] = "Editar Solicitud";
+    ViewData["Title"] = "Visor de Solicitud";
 }
-<h1>Crear Solicitud</h1>
-<h5>Se refiere a las Solicitudes de tóner o repuestos para impresoras utilizadas en la institución </h5>
+<h1>Visor de Solicitud</h1>
+<h3>@Model.Id </h3>
 <hr />
+<input type="hidden" asp-for="Id" value="@Model.Id" class="Solicitud" />
 <form asp-action="Editar" asp-controller="Solicitudes" method="post" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <!---  Para Lista de Impresoras   -->
     <div class="mb-3 form-group">
         <label asp-for="ImpresoraId" class="form-label">Impresora</label>
@@ -61,7 +61,7 @@
     <!--- Para Imagenes de documentación  -->
     <div class="mb-3 form-group">
         <label asp-for="Detalle" class="form-label">Imagenes para documentar</label>
-        <input type="file" asp-for="Detalle" class="form-control " name="imagenes" id="UpImagenes" placeholder="Ingrese los Detalles de la solicitud" />
+        <input type="file" asp-for="Detalle" class="form-control "  name="imagenes" id="UpImagenes" placeholder="Ingrese los Detalles de la solicitud" />
         <span asp-validation-for="Detalle" class="text-danger"></span>
     </div>
 
@@ -74,54 +74,5 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-<!---------------  Codigo para actualización dinamica Marcas y Modelos ------------->
-<script type="text/javascript">
-    $(document).ready(function () {
-        // Agrega un controlador de eventos al elemento con el ID "MarcaId"
-        $("#MarcaId").change(function () {
-             // Hace una solicitud GET a la ruta "/Modelos/GetModelos"
-            $.get("/Impresoras/GetModelos", { MarcaId: $("#MarcaId").val() }, function (data) {
-                // Vacía el contenido del elemento con el ID "ModeloId"
-                $("#ModeloId").empty();
-                // Itera sobre la lista de modelos recibida
-                $.each(data, function (index, row) {
-                    // Agrega opciones al elemento "ModeloId" con los valores y nombres de los modelos
-                    $("#ModeloId").append("<option value='" + row.id + "'>" + row.nombre + "</option>")
-                });
-            });
-        })
-    });
-</script>
-<!---------------  Codigo para actualización dinamica Areas y unidades ------------->
-<script type="text/javascript">
-    $(document).ready(function () {
-        // Agrega un controlador de eventos al elemento con el ID "AreaId"
-        $("#AreaId").change(function () {
-             // Hace una solicitud GET a la ruta "/Modelos/GetModelos"
-            $.get("/Impresoras/GetUnidades", { AreaId: $("#AreaId").val() }, function (data) {
-                // Vacía el contenido del elemento con el ID "ModeloId"
-                $("#UnidadId").empty();
-                // Itera sobre la lista de modelos recibida
-                $.each(data, function (index, row) {
-                    // Agrega opciones al elemento "ModeloId" con los valores y nombres de los modelos
-                    $("#UnidadId").append("<option value='" + row.id + "'>" + row.nombre + "</option>")
-                });
-            });
-        })
-    });
-</script>
-<!---------------  Codigo para verificar si existen tablas vacias  ------------->
-    @if (!ViewData.ModelState.IsValid)
-    {
-<div class="alert alert-danger" role="alert">
-    @foreach (var modelState in ViewData.ModelState.Values)
-    {
-    foreach (var error in modelState.Errors)
-    {
-    <p>@error.ErrorMessage</p>
-    }
-    }
-</div>
     }
 }

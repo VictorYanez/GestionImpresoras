@@ -111,7 +111,7 @@ namespace GestionImpresoras.Controllers
                 }
                 else
                 {
-                    var itemDisplay = _contexto.Mantenimientos.Find(id);
+                    var itemDisplay = _contexto.Solicitudes.Find(id);
                     if (itemDisplay == null)
                     {
                         return RedirectToAction("Noencontrado", "Home");
