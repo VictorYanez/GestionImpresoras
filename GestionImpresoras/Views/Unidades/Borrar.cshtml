@@ -1,4 +1,5 @@
-﻿@using GestionImpresoras.Models;
+﻿@using (Html.BeginForm())
+@using GestionImpresoras.Models;
 @model Unidad
 @{
     ViewData["Title"] = "Borrar Unidad";
@@ -6,6 +7,7 @@
 <h1>Borrar Unidad</h1>
 <h3>¿Estás seguro de que deseas borrar esta Unidad?</h3>
 <hr />
+@Html.AntiForgeryToken()
 <form asp-controller="Unidades" asp-action="Borrar" method="post">
     <!-- Definir el id que se envía desde la vista al controlador -->
     <input type="hidden" asp-for="Id" value="@Model.Id" class="Modelo" />

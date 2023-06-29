@@ -1,14 +1,12 @@
-﻿@model Color
-
+﻿@using (Html.BeginForm())
+@model Color
 @{
     ViewData["Title"] = "Crear Colores de Tinta";
 }
-
-
 <h1>Crear Color</h1>
 <h5>Se refiere a los colores de las tintas para los diferentes modelos de impresora</h5>
 <hr />
-
+@Html.AntiForgeryToken()
 <form asp-action="Crear" asp-controller="Colores" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 

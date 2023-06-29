@@ -90,131 +90,141 @@ namespace GestionImpresoras.Controllers
                     solicitud.UrlImagen = Path.Combine(pathImagesSolicitudes, fileName + extension);
                     // solicitud.FechaSolicitud = DateTime.Now;
                 }
-                    _contexto.Solicitudes.Add(solicitud);
-                    await _contexto.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                ///<!----------------------  Grupo de SelectListItems --------------------------->
-                ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
-                ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-                ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-                ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-                return View();
+                _contexto.Solicitudes.Add(solicitud);
+                await _contexto.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            // Metodos GET POST Solicitudes Editar
-            [HttpGet]
-            public async Task<IActionResult> Editar(int? id)
+            ///<!----------------------  Grupo de SelectListItems --------------------------->
+            ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
+            ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            return View();
+        }
+        // Metodos GET POST Solicitudes Editar
+        [HttpGet]
+        public async Task<IActionResult> Editar(int? id)
+        {
+            if (id == null)
             {
-                if (id == null)
+                return RedirectToAction("Noencontrado", "Home");
+            }
+            else
+            {
+                var itemDisplay = _contexto.Solicitudes.Find(id);
+                if (itemDisplay == null)
                 {
                     return RedirectToAction("Noencontrado", "Home");
                 }
                 else
                 {
-                    var itemDisplay = _contexto.Solicitudes.Find(id);
-                    if (itemDisplay == null)
-                    {
-                        return RedirectToAction("Noencontrado", "Home");
-                    }
-                    else
-                    {
-                        var impresoraEdit = await _contexto.Impresoras.FindAsync(id);
-                        ///<!----------------------   Grupo de SelectListItems --------------------------->
-                        ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
-                        ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-                        ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-                        ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+                    var impresoraEdit = await _contexto.Impresoras.FindAsync(id);
+                    ///<!----------------------   Grupo de SelectListItems --------------------------->
+                    ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
+                    ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+                    ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+                    ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
 
-                        return View(impresoraEdit);
-                    }
+                    return View(impresoraEdit);
                 }
             }
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Editar(Impresora impresora)
-            {
-                if (ModelState.IsValid)
-                {
-                    _contexto.Update(impresora);
-                    await _contexto.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));  //  return RedirectToAction("Index");
-                }
-                return View();
-            }
-
-            //Endpoints GET/POST para el borrado (Delete) de registros
-            [HttpGet]
-            public async Task<IActionResult> Borrar(int? id)
-            {
-                if (id == null)
-                {
-                    return RedirectToAction("Noencontrado", "Home");
-                }
-                var impresoraDisplay = await _contexto.Impresoras
-                    .Include(ma => ma.Marca)
-                    .Include(mo => mo.Modelo)
-                    .Include(a => a.Area)
-                    .Include(u => u.Unidad)
-                    .Include(e => e.Estado)
-                    .Include(i => i.Institucion)
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (impresoraDisplay == null)
-                {
-                    return RedirectToAction("Noencontrado", "Home");
-                }
-                return View(impresoraDisplay);
-            }
-
-            [HttpPost, ActionName("Borrar")]
-            [ValidateAntiForgeryToken]  //Para validar ataques 
-            public async Task<IActionResult> BorrarImpresora(int? id)
-            {
-                if (id == null)
-                {
-                    return RedirectToAction("Noencontrado", "Home");
-                }
-
-                var impresora = await _contexto.Impresoras.FindAsync(id);
-                if (impresora == null)
-                {
-                    return RedirectToAction("Noencontrado", "Home");
-                }
-                // Borrado de registro
-                _contexto.Impresoras.Remove(impresora);
-                await _contexto.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            //Endpoint para el desplegar (Details) de registros
-            [HttpGet]
-            public async Task<IActionResult> Details(int? id)
-            {
-                if (id == null)
-                {
-                    return RedirectToAction("Noencontrado", "Home");
-                }
-                var impresoraDisplay = await _contexto.Impresoras
-                    .Include(ma => ma.Marca)
-                    .Include(mo => mo.Modelo)
-                    .Include(a => a.Area)
-                    .Include(u => u.Unidad)
-                    .Include(e => e.Estado)
-                    .Include(i => i.Institucion)
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (impresoraDisplay == null)
-                {
-                    return RedirectToAction("Noencontrado", "Home");
-                }
-                return View(impresoraDisplay);
-            }
-
-            // Falla, podría ser el codigo JavaScript 
-            [HttpGet]
-            public JsonResult GetModelosByMarcaId(int marcaId)
-            {
-                var modelos = _contexto.Modelos.Where(m => m.MarcaId == marcaId).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToList();
-                return Json(modelos);
-            }
-
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Editar(Impresora impresora)
+        {
+            if (ModelState.IsValid)
+            {
+                _contexto.Update(impresora);
+                await _contexto.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));  //  return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        //Endpoints GET/POST para el borrado (Delete) de registros
+        [HttpGet]
+        public async Task<IActionResult> Borrar(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Noencontrado", "Home");
+            }
+            var impresoraDisplay = await _contexto.Impresoras
+                .Include(ma => ma.Marca)
+                .Include(mo => mo.Modelo)
+                .Include(a => a.Area)
+                .Include(u => u.Unidad)
+                .Include(e => e.Estado)
+                .Include(i => i.Institucion)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (impresoraDisplay == null)
+            {
+                return RedirectToAction("Noencontrado", "Home");
+            }
+            return View(impresoraDisplay);
+        }
+
+        [HttpPost, ActionName("Borrar")]
+        [ValidateAntiForgeryToken]  //Para validar ataques 
+        public async Task<IActionResult> BorrarImpresora(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Noencontrado", "Home");
+            }
+            var solicitud = await _contexto.Solicitudes.FindAsync(id);
+            if (solicitud == null)
+            {
+                return RedirectToAction("Noencontrado", "Home");
+            }
+
+            string rootPath = _webHostEnvironment.WebRootPath;
+            var archivos = HttpContext.Request.Form.Files;
+            var pathImagesSolicitudes = Path.Combine(rootPath, @"imagenes\solicitudes");
+            var fileToDelete = solicitud.UrlImagen;
+
+            // Borrado de la imagen en el sistema de imagenes 
+            if (System.IO.File.Exists(fileToDelete)) 
+            {
+                System.IO.File.Delete(fileToDelete);
+            }
+            // Borrado de registro en la base de datos 
+            _contexto.Solicitudes.Remove(solicitud);
+            await _contexto.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        //Endpoint para el desplegar (Details) de registros
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Noencontrado", "Home");
+            }
+            var impresoraDisplay = await _contexto.Impresoras
+                .Include(ma => ma.Marca)
+                .Include(mo => mo.Modelo)
+                .Include(a => a.Area)
+                .Include(u => u.Unidad)
+                .Include(e => e.Estado)
+                .Include(i => i.Institucion)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (impresoraDisplay == null)
+            {
+                return RedirectToAction("Noencontrado", "Home");
+            }
+            return View(impresoraDisplay);
+        }
+
+        // Falla, podría ser el codigo JavaScript 
+        [HttpGet]
+        public JsonResult GetModelosByMarcaId(int marcaId)
+        {
+            var modelos = _contexto.Modelos.Where(m => m.MarcaId == marcaId).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToList();
+            return Json(modelos);
+        }
+
     }
+}

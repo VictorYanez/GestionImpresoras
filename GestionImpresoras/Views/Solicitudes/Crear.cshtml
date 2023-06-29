@@ -1,8 +1,10 @@
-﻿@using GestionImpresoras.Models;
+﻿@using (Html.BeginForm())
+@using GestionImpresoras.Models;
 @model Solicitud
 @{
-    ViewData["Title"] = "Crear nueva Solicitud";
+        ViewData["Title"] = "Crear nueva Solicitud";
 }
+@Html.AntiForgeryToken()
 <h1>Crear Solicitud</h1>
 <h5>Se refiere a las Solicitudes de tóner o repuestos para impresoras utilizadas en la institución </h5>
 <hr />
