@@ -9,6 +9,7 @@ namespace GestionImpresoras.Controllers
     {
         private readonly ApplicationDBContext _contexto;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly String folderSolicitudes = @"imagenes\solicitudes";
 
         public SolicitudesController(ApplicationDBContext contexto, IWebHostEnvironment webHostEnvironment)
         {
@@ -63,32 +64,34 @@ namespace GestionImpresoras.Controllers
         {
             if (ModelState.IsValid)
             {
-                string rootPath = _webHostEnvironment.WebRootPath;
+                //  Capturo los archivos seleccionados 
                 var archivos = HttpContext.Request.Form.Files;
+                string rootPath = _webHostEnvironment.WebRootPath;
 
                 // Verifica si se está cargando un archivo
                 if (archivos.Count > 0)
                 {
-                    //  Acciones para almacenar las imagenes 
-                    var pathImagesSolicitudes = Path.Combine(rootPath, @"imagenes\solicitudes");
-
-                    // Para verificar si el directorio existe 
-                    if (!Directory.Exists(pathImagesSolicitudes))
+                    // Para verificar si el directorio existe  
+                    var pathFullSolicitudes = System.IO.Path.Combine(rootPath, folderSolicitudes);
+                    if (!Directory.Exists(pathFullSolicitudes))
                     {
-                        // Crea el directorio si no existe
-                        Directory.CreateDirectory(pathImagesSolicitudes);
+                        Directory.CreateDirectory(pathFullSolicitudes);
                     }
                     // Almacena el archivo en el servidor
                     string fileName = Guid.NewGuid().ToString();
                     var extension = Path.GetExtension(archivos[0].FileName);
+                    if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
+                    {
+                        return RedirectToAction("Noencontrado", "Home");
+                    }
 
-                    using (var fileStreams = new FileStream(Path.Combine(pathImagesSolicitudes, fileName + extension), FileMode.Create))
+                    using (var fileStreams = new FileStream(Path.Combine(pathFullSolicitudes, fileName + extension), FileMode.Create))
                     {
                         archivos[0].CopyTo(fileStreams);
                     }
-
-                    solicitud.UrlImagen = Path.Combine(pathImagesSolicitudes, fileName + extension);
-                    // solicitud.FechaSolicitud = DateTime.Now;
+                    String bslash = @"\";
+                    solicitud.UrlImagen = bslash + folderSolicitudes + bslash + fileName + extension;
+                    //solicitud.FechaSolicitud = DateTime.Now;
                 }
                 _contexto.Solicitudes.Add(solicitud);
                 await _contexto.SaveChangesAsync();
@@ -111,21 +114,20 @@ namespace GestionImpresoras.Controllers
             }
             else
             {
-                var itemDisplay = _contexto.Solicitudes.Find(id);
+                var itemDisplay = await _contexto.Solicitudes.FindAsync(id);
                 if (itemDisplay == null)
                 {
                     return RedirectToAction("Noencontrado", "Home");
                 }
                 else
                 {
-                    var impresoraEdit = await _contexto.Impresoras.FindAsync(id);
                     ///<!----------------------   Grupo de SelectListItems --------------------------->
                     ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
                     ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
                     ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
                     ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
 
-                    return View(impresoraEdit);
+                    return View(itemDisplay);
                 }
             }
         }
@@ -150,18 +152,23 @@ namespace GestionImpresoras.Controllers
             {
                 return RedirectToAction("Noencontrado", "Home");
             }
-            var impresoraDisplay = await _contexto.Impresoras
-                .Include(ma => ma.Marca)
-                .Include(mo => mo.Modelo)
-                .Include(a => a.Area)
-                .Include(u => u.Unidad)
-                .Include(e => e.Estado)
-                .Include(i => i.Institucion)
+            var impresoraDisplay = await _contexto.Solicitudes
+                .Include(i => i.Impresora)
+                .Include(es => es.EstadoSolicitud)
+                .Include(c => c.Color)
+                .Include(m => m.Medio)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (impresoraDisplay == null)
             {
                 return RedirectToAction("Noencontrado", "Home");
             }
+
+            ///<!----------------------   Grupo de SelectListItems --------------------------->
+            ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
+            ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+
             return View(impresoraDisplay);
         }
 
@@ -173,24 +180,24 @@ namespace GestionImpresoras.Controllers
             {
                 return RedirectToAction("Noencontrado", "Home");
             }
-            var solicitud = await _contexto.Solicitudes.FindAsync(id);
-            if (solicitud == null)
+            var itemDisplay = await _contexto.Solicitudes.FindAsync(id);
+            if (itemDisplay == null)
             {
                 return RedirectToAction("Noencontrado", "Home");
             }
 
             string rootPath = _webHostEnvironment.WebRootPath;
             var archivos = HttpContext.Request.Form.Files;
-            var pathImagesSolicitudes = Path.Combine(rootPath, @"imagenes\solicitudes");
-            var fileToDelete = solicitud.UrlImagen;
+            var pathImagesSolicitudes = Path.Combine(rootPath, folderSolicitudes);
+            var fileToDelete = itemDisplay.UrlImagen;
 
             // Borrado de la imagen en el sistema de imagenes 
-            if (System.IO.File.Exists(fileToDelete)) 
+            if (System.IO.File.Exists(fileToDelete))
             {
                 System.IO.File.Delete(fileToDelete);
             }
             // Borrado de registro en la base de datos 
-            _contexto.Solicitudes.Remove(solicitud);
+            _contexto.Solicitudes.Remove(itemDisplay);
             await _contexto.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
