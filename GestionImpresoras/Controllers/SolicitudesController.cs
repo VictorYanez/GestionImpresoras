@@ -79,15 +79,14 @@ namespace GestionImpresoras.Controllers
                     }
                     // Almacena el archivo en el servidor
                     string fileName = Guid.NewGuid().ToString();
-                    var extension = Path.GetExtension(archivos[0].FileName);
+                    var extension = Path.GetExtension(archivos[0].FileName).ToLower(); ;
                     if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
                     {
                         return RedirectToAction("Noencontrado", "Home");
                     }
-
                     using (var fileStreams = new FileStream(Path.Combine(pathFullSolicitudes, fileName + extension), FileMode.Create))
                     {
-                        archivos[0].CopyTo(fileStreams);
+                        await archivos[0].CopyToAsync(fileStreams);
                     }
                     String bslash = @"\";
                     solicitud.UrlImagen = bslash + folderSolicitudes + bslash + fileName + extension;

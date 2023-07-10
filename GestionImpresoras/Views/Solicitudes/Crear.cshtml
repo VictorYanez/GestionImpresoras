@@ -64,7 +64,7 @@
     <!--- Para Imagenes de documentación  -->
     <div class="mb-3 form-group">
         <label asp-for="UrlImagen" class="form-label">Imagenes para documentar</label>
-        <input type="file" asp-for="UrlImagen" class="form-control " name="UrlImagen" id="UpImagen" placeholder="Ingrese la imagen soporte" />
+        <input type="file" asp-for="UrlImagen" class="form-control" name="UrlImagen" id="UpImagen" placeholder="Ingrese la imagen soporte" accept="image/*" />
         <span asp-validation-for="UrlImagen" class="text-danger"></span>
     </div>
 
@@ -99,53 +99,4 @@
         display: none;
     }
 </style>
-<!---------------  Codigo para actualización dinamica Marcas y Modelos ------------->
-<script type="text/javascript">
-    $(document).ready(function () {
-        // Agrega un controlador de eventos al elemento con el ID "MarcaId"
-        $("#MarcaId").change(function () {
-             // Hace una solicitud GET a la ruta "/Modelos/GetModelos"
-            $.get("/Impresoras/GetModelos", { MarcaId: $("#MarcaId").val() }, function (data) {
-                // Vacía el contenido del elemento con el ID "ModeloId"
-                $("#ModeloId").empty();
-                // Itera sobre la lista de modelos recibida
-                $.each(data, function (index, row) {
-                    // Agrega opciones al elemento "ModeloId" con los valores y nombres de los modelos
-                    $("#ModeloId").append("<option value='" + row.id + "'>" + row.nombre + "</option>")
-                });
-            });
-        })
-    });
-</script>
-<!---------------  Codigo para actualización dinamica Areas y unidades ------------->
-<script type="text/javascript">
-    $(document).ready(function () {
-        // Agrega un controlador de eventos al elemento con el ID "AreaId"
-        $("#AreaId").change(function () {
-             // Hace una solicitud GET a la ruta "/Modelos/GetModelos"
-            $.get("/Impresoras/GetUnidades", { AreaId: $("#AreaId").val() }, function (data) {
-                // Vacía el contenido del elemento con el ID "ModeloId"
-                $("#UnidadId").empty();
-                // Itera sobre la lista de modelos recibida
-                $.each(data, function (index, row) {
-                    // Agrega opciones al elemento "ModeloId" con los valores y nombres de los modelos
-                    $("#UnidadId").append("<option value='" + row.id + "'>" + row.nombre + "</option>")
-                });
-            });
-        })
-    });
-</script>
-<!---------------  Codigo para verificar si existen tablas vacias  ------------->
-    @if (!ViewData.ModelState.IsValid)
-    {
-<div class="alert alert-danger" role="alert">
-    @foreach (var modelState in ViewData.ModelState.Values)
-    {
-    foreach (var error in modelState.Errors)
-    {
-    <p>@error.ErrorMessage</p>
-    }
-    }
-</div>
-    }
 }
