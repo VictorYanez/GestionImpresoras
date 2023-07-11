@@ -19,33 +19,22 @@
         </select>
         <span asp-validation-for="ImpresoraId" class="text-danger"></span>
     </div>
-    <!--- Para Lista de Estado de Solicitud   -->
-    <div class="mb-3 form-group">
-        <label asp-for="EstadoSolicitudId" class="form-label">Estado</label>
-        <select class="form-select form-select sm" asp-for="EstadoSolicitudId" asp-items="ViewBag.EstadoSolicitudId" disabled>
-            <option> --- Seleccionar Estado --- </option>
-        </select>
-        <span asp-validation-for="EstadoSolicitudId" class="text-danger"></span>
-    </div>
     <!--- Para Solicitante   -->
     <div class="mb-3 form-group">
         <label asp-for="Solicitante" class="form-label">Solicitante</label>
-        <input type="text" asp-for="Solicitante" class="form-control" readonly />
+        <input type="" asp-for="Solicitante" class="form-control" readonly />
         <span asp-validation-for="Solicitante" class="text-danger"></span>
-    </div>
-    <!--- Para Detalles  -->
-    <div class="mb-3 form-group">
-        <label asp-for="Detalle" class="form-label">Detalles de la solicitud</label>
-        <input type="text" asp-for="Detalle" class="form-control" readonly />
-        <span asp-validation-for="Detalle" class="text-danger"></span>
-    </div>
-    <!--- Para Imagenes de documentación  -->
-    <div class="mb-3 form-group">
-        <label asp-for="UrlImagen" class="form-label">Imagenes para documentar</label>
-        <input type="file" asp-for="UrlImagen" class="form-control " name="UrlImagen" id="UpImagen" readonly />
     </div>
     <div class="row">
         <div class="col-md-6">
+            <!--- Para Lista de Estado de Solicitud   -->
+            <div class="mb-3 form-group">
+                <label asp-for="EstadoSolicitudId" class="form-label">Estado</label>
+                <select class="form-select form-select sm" asp-for="EstadoSolicitudId" asp-items="ViewBag.EstadoSolicitudId" disabled>
+                    <option> --- Seleccionar Estado --- </option>
+                </select>
+                <span asp-validation-for="EstadoSolicitudId" class="text-danger"></span>
+            </div>
             <!--- Para Lista de Color Solicitado   -->
             <div class="mb-3 form-group">
                 <label asp-for="ColorId" class="form-label">Color</label>
@@ -53,6 +42,12 @@
                     <option> --- Seleccionar Color --- </option>
                 </select>
                 <span asp-validation-for="ColorId" class="text-danger"></span>
+            </div>
+            <!---  Para Lista de Fecha de Solicitud   -->
+            <div class="mb-3 form-group">
+                <label asp-for="FechaSolicitud" class="form-label">Fecha Solicitud</label>
+                <input type="date" asp-for="FechaSolicitud" class="form-control" readonly />
+                <span asp-validation-for="FechaSolicitud" class="text-danger"></span>
             </div>
             <!--- Para Lista de Medio Solicitado   -->
             <div class="mb-3 form-group">
@@ -62,11 +57,10 @@
                 </select>
                 <span asp-validation-for="MedioId " class="text-danger"></span>
             </div>
-            <!---  Para Lista de Fecha de Solicitud   -->
+            <!--- Sobre Imagenes de documentación  -->
             <div class="mb-3 form-group">
-                <label asp-for="FechaSolicitud" class="form-label">Fecha Solicitud</label>
-                <input type="date" asp-for="FechaSolicitud" class="form-control" readonly />
-                <span asp-validation-for="FechaSolicitud" class="text-danger"></span>
+                <label asp-for="UrlImagen" class="form-label">Datos de la imagen</label>
+                <input type="text" asp-for="UrlImagen" class="form-control" name="UrlImagen" id="UpImagen" readonly />
             </div>
         </div>
         @if (!string.IsNullOrEmpty(@Model.UrlImagen))
@@ -76,11 +70,23 @@
                     <div class="imagen-container text-center" style="border: 1px solid black; margin: auto;">
                         <img src="@Model.UrlImagen" alt="Imagen de soporte" class="imagen-soporte" style="margin: auto; width: 100%; height: 100%; object-fit: contain;" />
                     </div>
-                    <label class="form-label">Image de Soporte @Model.UrlImagen</label>
+
                 </div>
             </div>
         }
     </div>
+    <!--- Para Detalles  -->
+    <div class="mb-3 form-group">
+        <label asp-for="Detalle" class="form-label">Detalles de la solicitud</label>
+        <input type="" asp-for="Detalle" class="form-control" readonly />
+        <span asp-validation-for="Detalle" class="text-danger"></span>
+    </div>
+    <div class="mb-3 form-group">
+        <label asp-for="Detalle" class="form-label">Detalles de la solicitud</label>
+        <textarea asp-for="Detalle" class="form-control" id="detalle-input" readonly></textarea>
+        <span asp-validation-for="Detalle" class="text-danger"></span>
+    </div>
+
     <!---------------  Botones summit y cancelar  ------------->
     <button type="submit" class="btn btn-primary"><i class="bi bi-eraser"></i> Borrar</button>
     <a class="btn btn-secondary" asp-action="Index"><i class="bi bi-stop-circle"> Cancelar</i></a>

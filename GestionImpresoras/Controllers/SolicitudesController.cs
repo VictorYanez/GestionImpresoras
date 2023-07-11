@@ -209,18 +209,23 @@ namespace GestionImpresoras.Controllers
             {
                 return RedirectToAction("Noencontrado", "Home");
             }
-            var impresoraDisplay = await _contexto.Impresoras
-                .Include(ma => ma.Marca)
-                .Include(mo => mo.Modelo)
-                .Include(a => a.Area)
-                .Include(u => u.Unidad)
-                .Include(e => e.Estado)
-                .Include(i => i.Institucion)
+            var impresoraDisplay = await _contexto.Solicitudes
+                .Include(i => i.Impresora)
+                .Include(es => es.EstadoSolicitud)
+                .Include(c => c.Color)
+                .Include(m => m.Medio)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (impresoraDisplay == null)
             {
                 return RedirectToAction("Noencontrado", "Home");
             }
+
+            ///<!----------------------   Grupo de SelectListItems --------------------------->
+            ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
+            ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+
             return View(impresoraDisplay);
         }
 
