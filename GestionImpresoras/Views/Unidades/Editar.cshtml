@@ -6,6 +6,7 @@
 <h1>Editar Unidades</h1>
 <h3>@Model.Nombre</h3>
 <hr />
+@Html.AntiForgeryToken()
 <form asp-action="Editar" asp-controller="Unidades" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 

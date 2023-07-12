@@ -28,7 +28,7 @@ namespace GestionImpresoras.Controllers
         }
         // Metodos GET POST Solicitudes Crear
         [HttpGet]
-        public async Task<IActionResult> Crear()
+        public async Task<IActionResult> Create()
         {
             if (!await _contexto.Impresoras.AnyAsync())
             {
@@ -60,7 +60,7 @@ namespace GestionImpresoras.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear(Solicitud solicitud)
+        public async Task<IActionResult> Create(Solicitud solicitud)
         {
             if (ModelState.IsValid)
             {
@@ -103,9 +103,9 @@ namespace GestionImpresoras.Controllers
             ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
             return View();
         }
-        // Metodos GET POST Solicitudes Editar
+        // ----------------->>>>>   Metodos GET POST Solicitudes Editar
         [HttpGet]
-        public async Task<IActionResult> Editar(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -132,20 +132,63 @@ namespace GestionImpresoras.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(Impresora impresora)
+        public async Task<IActionResult> Edit(Solicitud solicitud)
         {
             if (ModelState.IsValid)
             {
-                _contexto.Update(impresora);
+                //  Capturo los archivos seleccionados 
+                var archivos = HttpContext.Request.Form.Files;
+                string rootPath = _webHostEnvironment.WebRootPath;
+                string ToRemove = null;
+                if (!String.IsNullOrEmpty(solicitud.UrlImagen))
+                {
+                     ToRemove = Path.Combine(rootPath, solicitud.UrlImagen);
+                }               
+                // Verifica si se está cargando un archivo
+                if (archivos.Count > 0)
+                {
+                    // Para verificar si el directorio existe  
+                    var pathFullSolicitudes = System.IO.Path.Combine(rootPath, folderSolicitudes);
+                    if (!Directory.Exists(pathFullSolicitudes))
+                    {
+                        Directory.CreateDirectory(pathFullSolicitudes);
+                    }
+                    // Almacena el archivo en el servidor
+                    string fileName = Guid.NewGuid().ToString();
+                    var extension = Path.GetExtension(archivos[0].FileName).ToLower(); ;
+                    if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
+                    {
+                        return RedirectToAction("Noencontrado", "Home");
+                    }
+                    // ------------>>>>>>>  Eliminar archivo anterior   <<<<<<<<------------------- 
+                    if (System.IO.File.Exists(ToRemove))
+                    {
+                        System.IO.File.Delete(ToRemove);
+                    }
+                    // ------------>>>>>>>  Almacenar nuevo archivo   <<<<<<<<------------------- 
+                    using (var fileStreams = new FileStream(Path.Combine(pathFullSolicitudes, fileName + extension), FileMode.Create))
+                    {
+                        await archivos[0].CopyToAsync(fileStreams);
+                    }
+                    String bslash = @"\";
+                    solicitud.UrlImagen = bslash + folderSolicitudes + bslash + fileName + extension;
+                    //solicitud.FechaSolicitud = DateTime.Now;
+                }
+                _contexto.Solicitudes.Update(solicitud);
                 await _contexto.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));  //  return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
+            ///<!----------------------  Grupo de SelectListItems --------------------------->
+            ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
+            ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.ColorId = await _contexto.Colores.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
             return View();
         }
 
         //Endpoints GET/POST para el borrado (Delete) de registros
         [HttpGet]
-        public async Task<IActionResult> Borrar(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -171,9 +214,9 @@ namespace GestionImpresoras.Controllers
             return View(impresoraDisplay);
         }
 
-        [HttpPost, ActionName("Borrar")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]  //Para validar ataques 
-        public async Task<IActionResult> BorrarImpresora(int? id)
+        public async Task<IActionResult> DeleteImpresora(int? id)
         {
             if (id == null)
             {
@@ -200,7 +243,6 @@ namespace GestionImpresoras.Controllers
             await _contexto.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         //Endpoint para el desplegar (Details) de registros
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
@@ -219,7 +261,6 @@ namespace GestionImpresoras.Controllers
             {
                 return RedirectToAction("Noencontrado", "Home");
             }
-
             ///<!----------------------   Grupo de SelectListItems --------------------------->
             ViewBag.ImpresoraId = await _contexto.Impresoras.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.CodigoActivoFijo }).ToListAsync();
             ViewBag.EstadoSolicitudId = await _contexto.EstadoSolicitudes.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
@@ -228,14 +269,5 @@ namespace GestionImpresoras.Controllers
 
             return View(impresoraDisplay);
         }
-
-        // Falla, podría ser el codigo JavaScript 
-        [HttpGet]
-        public JsonResult GetModelosByMarcaId(int marcaId)
-        {
-            var modelos = _contexto.Modelos.Where(m => m.MarcaId == marcaId).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToList();
-            return Json(modelos);
-        }
-
     }
 }
