@@ -10,7 +10,7 @@
 @Html.AntiForgeryToken()
 <input type="hidden" asp-for="Id" value="@Model.Id" class="Solicitud" />
 <img class="rounded foat-left" hidden id="imagenToShow" alt="Imagen Seleccionada" />
-<form asp-action="Borrar" asp-controller="Solicitudes" method="post" enctype="multipart/form-data">
+<form asp-action="Delete" asp-controller="Solicitudes" method="post" enctype="multipart/form-data">
     <!---  Para Lista de Impresoras   -->
     <div class="mb-3 form-group">
         <label asp-for="ImpresoraId" class="form-label">Impresora</label>

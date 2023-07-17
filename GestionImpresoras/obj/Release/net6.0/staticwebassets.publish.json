@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "zM2Bb+ueeV22ldkfi+6QMVG+nFYYOe2l9xD55IR4Qks=",
+  "Hash": "4dcKGGhfIghnpJWb5E3pFHW1X/8WdKSP4lkbvu7hO1g=",
   "Source": "GestionImpresoras",
   "BasePath": "_content/GestionImpresoras",
   "Mode": "Default",
@@ -17,10 +17,10 @@
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\scopedcss\\bundle\\GestionImpresoras.styles.css",
+      "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\win-x86\\scopedcss\\bundle\\GestionImpresoras.styles.css",
       "SourceId": "GestionImpresoras",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\win-x86\\scopedcss\\bundle\\",
       "BasePath": "_content/GestionImpresoras",
       "RelativePath": "GestionImpresoras.styles.css",
       "AssetKind": "All",
@@ -31,13 +31,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\scopedcss\\bundle\\GestionImpresoras.styles.css"
+      "OriginalItemSpec": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\win-x86\\scopedcss\\bundle\\GestionImpresoras.styles.css"
     },
     {
-      "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\GestionImpresoras.bundle.scp.css",
+      "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\win-x86\\scopedcss\\projectbundle\\GestionImpresoras.bundle.scp.css",
       "SourceId": "GestionImpresoras",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\win-x86\\scopedcss\\projectbundle\\",
       "BasePath": "_content/GestionImpresoras",
       "RelativePath": "GestionImpresoras.bundle.scp.css",
       "AssetKind": "All",
@@ -48,7 +48,7 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\GestionImpresoras.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\Release\\net6.0\\win-x86\\scopedcss\\projectbundle\\GestionImpresoras.bundle.scp.css"
     },
     {
       "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\~\\imagenes\\solicitudes\\acf6080e-ab21-43cb-a996-e1d88d6cc57f.jpg",
