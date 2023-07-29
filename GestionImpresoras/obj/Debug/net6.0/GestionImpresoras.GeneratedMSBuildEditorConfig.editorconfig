@@ -5,6 +5,7 @@ build_property.UsingMicrosoftNETSdkWeb = true
 build_property.ProjectTypeGuids = 
 build_property.InvariantGlobalization = 
 build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = GestionImpresoras
 build_property.RootNamespace = GestionImpresoras
@@ -27,8 +28,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXJlYXNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/victor.yanez/source/repos/GestionImpresoras/GestionImpresoras/Views/Areas/Editar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXJlYXNcRWRpdGFyLmNzaHRtbA==
+[C:/Users/victor.yanez/source/repos/GestionImpresoras/GestionImpresoras/Views/Areas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXJlYXNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/victor.yanez/source/repos/GestionImpresoras/GestionImpresoras/Views/Areas/Index.cshtml]

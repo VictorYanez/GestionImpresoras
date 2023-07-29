@@ -42,7 +42,7 @@ namespace GestionImpresoras.Controllers
 
         //Endpoints para el Borrar registros
         [HttpGet]
-        public IActionResult Editar(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -61,7 +61,7 @@ namespace GestionImpresoras.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(Area area)
+        public async Task<IActionResult> Edit(Area area)
         {
             if (ModelState.IsValid)
             {
