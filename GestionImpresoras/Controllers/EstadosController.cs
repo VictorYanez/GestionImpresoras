@@ -22,14 +22,14 @@ namespace GestionImpresoras.Controllers
         }
 
         [HttpGet]
-        public IActionResult Crear()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task< IActionResult> Crear(Estado estado)
+        public async Task< IActionResult> Create(Estado estado)
         {
             if (ModelState.IsValid) 
             { 
@@ -40,7 +40,7 @@ namespace GestionImpresoras.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Editar(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -58,7 +58,7 @@ namespace GestionImpresoras.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]  
-        public async Task<IActionResult> Editar(Estado estado)
+        public async Task<IActionResult> Edit(Estado estado)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +70,7 @@ namespace GestionImpresoras.Controllers
         }
 
         [HttpGet]
-        public IActionResult Borrar(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -87,19 +87,34 @@ namespace GestionImpresoras.Controllers
             }
         }
 
-        [HttpPost, ActionName("Borrar")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BorrarContacto(int? id)
+        public async Task<IActionResult> DeleteEstados(int? id)
         {
-            var estado = await _contexto.Estados.FindAsync(id);
-            if (estado == null)
+            var estadoDisplay = await _contexto.Estados.FindAsync(id);
+            if (estadoDisplay == null)
             {
                 return View();
             }
-             else   _contexto.Estados.Remove(estado);
-                await _contexto.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));    //  RedirectToAction("Index")
-         }
+            else
+            {
+                // Verificar si hay impresoras que están usando este estado
+                var impresoras = _contexto.Impresoras.Where(i => i.EstadoId == id);
+                if (impresoras.Any())
+                {
+                    // Mostrar un mensaje al usuario informándole que no se puede eliminar el estado
+                    ModelState.AddModelError("", "No se puede eliminar este estado porque está siendo usado por una o más impresoras. Por favor reasigne las impresoras a otro estado antes de eliminarlo.");
+                    return View(estadoDisplay);
+                }
+                else
+                {
+                    _contexto.Estados.Remove(estadoDisplay);
+                    await _contexto.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+        }
+
 
         [HttpGet]
         public IActionResult Details(int? id)

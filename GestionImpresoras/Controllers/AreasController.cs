@@ -22,14 +22,14 @@ namespace GestionImpresoras.Controllers
         }
 
         [HttpGet]
-        public IActionResult Crear()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear(Area area)
+        public async Task<IActionResult> Create(Area area)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace GestionImpresoras.Controllers
         }
         //Endpoints para el Borrar registros
         [HttpGet]
-        public IActionResult Borrar(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -90,9 +90,9 @@ namespace GestionImpresoras.Controllers
             }
         }
 
-        [HttpPost, ActionName("Borrar")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BorrarArea(int? id)
+        public async Task<IActionResult> DeleteArea(int? id)
         {
             var areaDisplay = await _contexto.Areas.FindAsync(id);
             if (areaDisplay == null)

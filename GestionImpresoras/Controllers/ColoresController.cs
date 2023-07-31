@@ -20,14 +20,14 @@ namespace GestionImpresoras.Controllers
             return View(listado);
         }
         [HttpGet]
-        public IActionResult Crear()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear(Color color)
+        public async Task<IActionResult> Create(Color color)
         {
             if (ModelState.IsValid)
             {
@@ -40,7 +40,7 @@ namespace GestionImpresoras.Controllers
 
         //Endpoints para el Borrar registros
         [HttpGet]
-        public IActionResult Editar(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -59,7 +59,7 @@ namespace GestionImpresoras.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(Color color)
+        public async Task<IActionResult> Edit(Color color)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace GestionImpresoras.Controllers
         }
         //Endpoints para el Borrar registros
         [HttpGet]
-        public IActionResult Borrar(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -88,9 +88,9 @@ namespace GestionImpresoras.Controllers
             }
         }
 
-        [HttpPost, ActionName("Borrar")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BorrarColor(int? id)
+        public async Task<IActionResult> DeleteColor(int? id)
         {
             var colorDisplay = await _contexto.Colores.FindAsync(id);
             if (colorDisplay == null)
