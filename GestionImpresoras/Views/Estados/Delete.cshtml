@@ -11,6 +11,22 @@
 <hr />
 <form asp-controller="Estados" asp-action="Delete">
 
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+
     <!-- Definir el id que se envía desde la vista al controlador -->
     <input type="hidden" asp-for="Id" value="@Model.Id" class="Estados" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
