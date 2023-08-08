@@ -61,38 +61,33 @@ namespace GestionImpresoras.Controllers
                 ModelState.AddModelError(string.Empty, "La tabla de instituciones está vacía");
                 return View();
             }
-
-            ViewBag.EstadoId = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            ViewBag.MarcaId = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            ViewBag.ModeloId = await _contexto.Modelos.Where(m => m.MarcaId == 0).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            ///<!----------------------  Segundo Grupo de SelectListItems --------------------------->
-            ViewBag.InstitucionId = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-            ViewBag.UnidadId = await _contexto.Unidades.Where(a => a.AreaId == 0).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-
+            // Obtenemos todas las áreas que no tienen unidades asociadas
+            var areasSinUnidades = await _contexto.Areas
+                .Where(a => !_contexto.Unidades.Any(u => u.AreaId == a.Id))
+                .ToListAsync();
+            if (areasSinUnidades.Any())
+            {
+                ModelState.AddModelError(string.Empty, "Existen áreas sin unidades asociadas " + string.Join(", ", areasSinUnidades.Select(a => a.Nombre)));
+            }
+            // Obtenemos todas las marcas que no tienen modelos asociados
+            var marcasSinModelos = await _contexto.Marcas
+                .Where(m => !_contexto.Modelos.Any(mod => mod.MarcaId == m.Id))
+                .ToListAsync();
+            if (marcasSinModelos.Any())
+            {
+                ModelState.AddModelError(string.Empty, "Existen marcas sin modelos asociados: " + string.Join(", ", marcasSinModelos.Select(m => m.Nombre)));
+            }
+            if (ModelState.IsValid)
+            {
+                ViewBag.EstadoId = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+                ViewBag.MarcaId = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+                ViewBag.ModeloId = await _contexto.Modelos.Where(m => m.MarcaId == 0).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+                ///<!----------------------  Segundo Grupo de SelectListItems --------------------------->
+                ViewBag.InstitucionId = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+                ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+                ViewBag.UnidadId = await _contexto.Unidades.Where(a => a.AreaId == 0).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            }
             return View();
-
-            //var marcas = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            //ViewBag.MarcaId = marcas;
-            //var modelos = await _contexto.Modelos.Where(m => m.MarcaId == 0).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            //ViewBag.ModeloId = modelos;
-            //var areas = await _contexto.Areas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            //ViewBag.MarcaId = marcas;
-            //var unidades = await _contexto.Unidades.Where(m => m.AreaId == 0).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            //ViewBag.ModeloId = modelos;
-            //var estados = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            //ViewBag.EstadoId = estados;
-            //var instituciones = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            //ViewBag.InstitucionId = instituciones;
-
-            //Para verificar posibles errores
-            //var estados = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            //Console.WriteLine("Estados: " + string.Join(", ", estados.Select(e => e.Text)));
-            //ViewBag.EstadoId = estados;
-            //var instituciones = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            //Console.WriteLine("Instituciones: " + string.Join(", ", instituciones.Select(e => e.Text)));
-            //ViewBag.InstitucionId = instituciones;
-
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
