@@ -125,6 +125,28 @@
             }
         </div>
     }
+    <!-- ... Mensajes  ... -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // ... otros scripts ...
+
+            // Evento de cambio en las listas desplegables
+            $("#MarcaId").change(function () {
+                var marcaId = $(this).val();
+                if (marcaId === "") {
+                    showAlert("error", "Error", "Por favor, selecciona una marca válida.");
+                }
+                else {
+                    // Hacer la solicitud AJAX y actualizar la lista desplegable
+                }
+            });
+
+            // Otros eventos similares para las demás listas desplegables
+        });
+    </script>
+
+
 }
 @*
   <!---------------  Codigo para actualización dinamica utilizando DropDownList  ------------->

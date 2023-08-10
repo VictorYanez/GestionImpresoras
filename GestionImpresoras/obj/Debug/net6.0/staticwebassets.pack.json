@@ -53,6 +53,10 @@
       "PackagePath": "staticwebassets\\imagenes\\solicitudes\\f8d15a10-fcc4-48ef-ae60-1d34ffcf2fd3.jpg"
     },
     {
+      "Id": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\js\\mensajeSWA.js",
+      "PackagePath": "staticwebassets\\js\\mensajeSWA.js"
+    },
+    {
       "Id": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

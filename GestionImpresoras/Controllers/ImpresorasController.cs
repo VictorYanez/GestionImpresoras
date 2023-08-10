@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GestionImpresoras.Controllers
 {
-    public class ImpresorasController : Controller
+    public class ImpresorasController : BaseController
     {
         private readonly ApplicationDBContext _contexto;
 
@@ -67,7 +67,9 @@ namespace GestionImpresoras.Controllers
                 .ToListAsync();
             if (areasSinUnidades.Any())
             {
-                ModelState.AddModelError(string.Empty, "Existen áreas sin unidades asociadas " + string.Join(", ", areasSinUnidades.Select(a => a.Nombre)));
+                var textMSG = "Existen áreas sin unidades asociadas: " + string.Join(", ", areasSinUnidades.Select(m => m.Nombre));
+                ModelState.AddModelError(string.Empty, textMSG);
+                ShowAlert("warning", "Alerta!!", textMSG);
             }
             // Obtenemos todas las marcas que no tienen modelos asociados
             var marcasSinModelos = await _contexto.Marcas
@@ -75,7 +77,9 @@ namespace GestionImpresoras.Controllers
                 .ToListAsync();
             if (marcasSinModelos.Any())
             {
-                ModelState.AddModelError(string.Empty, "Existen marcas sin modelos asociados: " + string.Join(", ", marcasSinModelos.Select(m => m.Nombre)));
+                var textMSG = "Existen marcas sin modelos asociados: " + string.Join(", ", marcasSinModelos.Select(m => m.Nombre));
+                ModelState.AddModelError(string.Empty, textMSG);
+                ShowAlert("warning", "Alerta!!", textMSG);
             }
             if (ModelState.IsValid)
             {

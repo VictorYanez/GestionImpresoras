@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "T0sjVsaJ2Uu6Z4liDUJy+ddaOQPQddNXRZ+hFwuVdLc=",
+  "Hash": "dCB/BOt1hemEhwqw5tcCy7V70OYmyYLClk3XjFDAePU=",
   "Source": "GestionImpresoras",
   "BasePath": "_content/GestionImpresoras",
   "Mode": "Default",
@@ -304,6 +304,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\imagenes\\solicitudes\\f8d15a10-fcc4-48ef-ae60-1d34ffcf2fd3.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\js\\mensajeSWA.js",
+      "SourceId": "GestionImpresoras",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\",
+      "BasePath": "_content/GestionImpresoras",
+      "RelativePath": "js/mensajeSWA.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\mensajeSWA.js"
     },
     {
       "Identity": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\wwwroot\\js\\site.js",
