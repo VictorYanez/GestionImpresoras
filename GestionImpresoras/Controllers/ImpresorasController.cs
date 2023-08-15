@@ -1,5 +1,4 @@
 ﻿using System.Web;
-
 using GestionImpresoras.Models;
 using Microsoft.AspNetCore.Mvc;
 using GestionImpresoras.Data;
@@ -7,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using GestionImpresoras.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 namespace GestionImpresoras.Controllers
 {
     public class ImpresorasController : BaseController
@@ -29,8 +27,17 @@ namespace GestionImpresoras.Controllers
             return View(lista);
         }
         // GET: Impresoras/Crear
+        [HttpGet]
         public async Task<IActionResult> Crear()
         {
+            // Llenar las ViewBag con los datos necesarios para repoblar los campos
+            ViewBag.EstadoId = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+            ViewBag.MarcaId = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.ModeloId = new List<SelectListItem>(); // Inicialmente vacía
+            ViewBag.InstitucionId = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+            ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            ViewBag.UnidadId = new List<SelectListItem>(); // Inicialmente vacía
+
             if (!await _contexto.Marcas.AnyAsync())
             {
                 ModelState.AddModelError(string.Empty, "La tabla de marcas está vacía");
@@ -81,41 +88,81 @@ namespace GestionImpresoras.Controllers
                 ModelState.AddModelError(string.Empty, textMSG);
                 ShowAlert("warning", "Alerta!!", textMSG);
             }
-            if (ModelState.IsValid)
-            {
-                ViewBag.EstadoId = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-                ViewBag.MarcaId = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-                ViewBag.ModeloId = await _contexto.Modelos.Where(m => m.MarcaId == 0).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-                ///<!----------------------  Segundo Grupo de SelectListItems --------------------------->
-                ViewBag.InstitucionId = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-                ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-                ViewBag.UnidadId = await _contexto.Unidades.Where(a => a.AreaId == 0).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-            }
+            ViewBag.EstadoId = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+            ViewBag.MarcaId = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.ModeloId = await _contexto.Modelos.Where(m => m.MarcaId == 0).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ///<!----------------------  Segundo Grupo de SelectListItems --------------------------->
+            ViewBag.InstitucionId = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+            ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            ViewBag.UnidadId = await _contexto.Unidades.Where(a => a.AreaId == 0).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(Impresora impresora)
         {
+            var nadaTemp = impresora.CodigoActivoFijo.ToString();
             if (ModelState.IsValid)
             {
-                _contexto.Update(impresora);
-                await _contexto.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));  //  return RedirectToAction("Index");
+                // Validar campos de selección
+                if (impresora.MarcaId == 0 || impresora.ModeloId == 0 || impresora.AreaId == 0 || impresora.UnidadId == 0 || impresora.EstadoId == 0 || impresora.InstitucionId == 0)
+                {
+                    ModelState.AddModelError(string.Empty, "Por favor, completa todos los campos de selección.");
+                }
+                else
+                {
+                    _contexto.Update(impresora);
+                    await _contexto.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));  //  return RedirectToAction("Index");
+                }
             }
-            return View();
+            // Llenar las ViewBag con los datos necesarios para repoblar los campos
+            ViewBag.EstadoId = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+            ViewBag.MarcaId = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.ModeloId = await _contexto.Modelos.Where(m => m.MarcaId == impresora.MarcaId).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.InstitucionId = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+            ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            ViewBag.UnidadId = await _contexto.Unidades.Where(a => a.AreaId == impresora.AreaId).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            // ...
+            return View(impresora);
         }
         // Devolver listados de Modelos correpondientes a dicha marca
         public JsonResult GetModelos(int marcaId)
         {
-            var modelos = _contexto.Modelos.Where(m => m.MarcaId == marcaId).Select(m => new { id = m.Id, nombre = m.Nombre }).ToList();
+            // Verificar si la marca tiene modelos asociados
+            var modelosAsociados = _contexto.Modelos.Any(m => m.MarcaId == marcaId);
+            if (!modelosAsociados)
+            {
+                var errorMessage = "La marca seleccionada no tiene modelos asociados.";
+                ModelState.AddModelError("ModeloId", errorMessage); // Agregar error al ModelState
+                ShowAlert("warning", "Advertencia", errorMessage); // Mostrar alerta
+                TempData["ShowAlertType"] = "warning";
+                TempData["ShowAlertTitle"] = "Advertencia";
+                TempData["ShowAlertMessage"] = errorMessage;
+            }
+            var modelos = _contexto.Modelos
+                .Where(m => m.MarcaId == marcaId)
+                .Select(m => new { id = m.Id, nombre = m.Nombre })
+                .ToList();
             return Json(modelos);
         }
-
         // Devolver listados de unidades correpondientes a dicha área
         public JsonResult GetUnidades(int areaId)
         {
-            var unidades = _contexto.Unidades.Where(a => a.AreaId == areaId).Select(a => new { id = a.Id, nombre = a.Nombre }).ToList();
+            // Verificar si la marca tiene modelos asociados
+            var unidadesAsociadas = _contexto.Unidades.Any(a => a.AreaId == areaId);
+            if (!unidadesAsociadas)
+            {
+                var errorMessage = "La marca seleccionada no tiene modelos asociados.";
+                ModelState.AddModelError("ModeloId", errorMessage); // Agregar error al ModelState
+                ShowAlert("warning", "Advertencia", errorMessage); // Mostrar alerta
+                TempData["ShowAlertType"] = "warning";
+                TempData["ShowAlertTitle"] = "Advertencia";
+                TempData["ShowAlertMessage"] = errorMessage;
+            }
+            var unidades = _contexto.Unidades
+                .Where(a => a.AreaId == areaId)
+                .Select(a => new { id = a.Id, nombre = a.Nombre })
+                .ToList();
             return Json(unidades);
         }
 

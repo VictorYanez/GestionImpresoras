@@ -1,0 +1,10 @@
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\bin\Debug\DataBase.dacpac
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\bin\Debug\DataBase.dll
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\bin\Debug\DataBase.pdb
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\obj\Debug\DataBase.sqlproj.AssemblyReference.cache
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\obj\Debug\Model.xml
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\obj\Debug\refactor.xml
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\obj\Debug\postdeploy.sql
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\obj\Debug\predeploy.sql
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\obj\Debug\DataBase.dll
+C:\Users\victor.yanez\source\repos\GestionImpresoras\DataBase\obj\Debug\DataBase.pdb

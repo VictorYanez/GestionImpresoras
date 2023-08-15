@@ -1,13 +1,29 @@
 ﻿@using GestionImpresoras.Models;
 @using GestionImpresoras.ViewModels;
-@model Impresora //ImpresoraViewModel al usa viewbag ya no fué necesaria y asp-items="@Model.vListaMarca" asp-items="@Model.vListaModelo"                   
+@model Impresora //ImpresoraViewModel al usa viewbag ya no fué necesaria y asp-items="@Model.vListaMarca" asp-items="@Model.vListaModelo"
 @{
     ViewData["Title"] = "Crear nueva Impresora";
 }
 <h1>Crear Impresora</h1>
 <h5>Se refiere a las Impresora utilizadas en la institución </h5>
 <hr />
-    <form asp-action="Crear" asp-controller="Impresoras" method="post">
+<form asp-action="Crear" asp-controller="Impresoras" method="post">
+    <!-- Sección de mensajes personalizados -->
+    <div class="custom-validation-summary">
+        @Html.ValidationSummary(true, "", new { @class = "custom-validation-summary" })
+        @if (ViewData.ModelState.ContainsKey(string.Empty))
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in ViewData.ModelState[string.Empty].Errors)
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+    <!-- Cuerpo del formulario -->
     <div class="mb-3 form-group">
         <label asp-for="CodigoActivoFijo " class="form-label">Codigo Activo Fijo</label>
         <input type="text" asp-for="CodigoActivoFijo" class="form-control" placeholder="Ingrese el Codigo Activo Fijo" />
@@ -17,42 +33,47 @@
     <div class="mb-3 form-group">
         <label asp-for="MarcaId" class="form-label">Marca</label>
         <select class="form-select form-select sm" asp-for="MarcaId" asp-items="ViewBag.MarcaId">
-        <option > --- Seleccionar Marca --- </option></select>
+            <option> --- Seleccionar Marca --- </option>
+        </select>
         <span asp-validation-for="Marca" class="text-danger"></span>
     </div>
-        <!--- Para Lista de Modelo   -->
+    <!--- Para Lista de Modelo   -->
     <div class="mb-3 form-group">
         <label asp-for="ModeloId" class="form-label">Modelo</label>
         <select class="form-select form-select sm" asp-for="ModeloId" asp-items="ViewBag.ModeloId">
-        <option > --- Seleccionar Modelo --- </option></select>
+            <option> --- Seleccionar Modelo --- </option>
+        </select>
         <span asp-validation-for="Modelo" class="text-danger"></span>
     </div>
     <!--- Para Lista de Area   -->
     <div class="mb-3 form-group">
         <label asp-for="AreaId" class="form-label">Área</label>
         <select class="form-select form-select sm" asp-for="AreaId" asp-items="ViewBag.AreaId">
-        <option > --- Seleccionar Area --- </option></select>
+            <option> --- Seleccionar Area --- </option>
+        </select>
         <span asp-validation-for="Area" class="text-danger"></span>
     </div>
-        <!--- Para Lista de Unidad   -->
+    <!--- Para Lista de Unidad   -->
     <div class="mb-3 form-group">
-        <label asp-for="UnidadId" class="form-label">Unidad</label> 
+        <label asp-for="UnidadId" class="form-label">Unidad</label>
         <select class="form-select form-select sm" asp-for="UnidadId" asp-items="ViewBag.UnidadId">
-        <option > --- Seleccionar Unidad --- </option></select>
+            <option> --- Seleccionar Unidad --- </option>
+        </select>
         <span asp-validation-for="Unidad" class="text-danger"></span>
     </div>
     <!--- Para Lista de Estados   -->
     <div class="mb-3 form-group">
         <label asp-for="EstadoId" class="form-label">Estado</label>
         <select class="form-select form-select sm" asp-for="EstadoId" asp-items="ViewBag.EstadoId">
-        <option > --- Seleccionar Estado --- </option></select>
+            <option> --- Seleccionar Estado --- </option>
+        </select>
         <span asp-validation-for="Estado" class="text-danger"></span>
     </div>
-
     <div class="mb-3 form-group">
         <label asp-for="InstitucionId" class="form-label">Institución</label>
         <select class="form-select form-select sm" asp-for="InstitucionId" asp-items="ViewBag.InstitucionId">
-        <option > --- Seleccionar Estado --- </option></select>
+            <option> --- Seleccionar Estado --- </option>
+        </select>
         <span asp-validation-for="Institucion" class="text-danger"></span>
     </div>
 
@@ -76,22 +97,32 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-      <!---------------  Codigo para actualización dinamica Marcas y Modelos ------------->
+    <!---------------  Codigo para actualización dinamica Marcas y Modelos ------------->
     <script type="text/javascript">
         $(document).ready(function () {
-            // Agrega un controlador de eventos al elemento con el ID "MarcaId"
+            // Evento de cambio en la lista desplegable de marca
             $("#MarcaId").change(function () {
-                 // Hace una solicitud GET a la ruta "/Modelos/GetModelos"
-                $.get("/Impresoras/GetModelos", { MarcaId: $("#MarcaId").val() }, function (data) {
-                    // Vacía el contenido del elemento con el ID "ModeloId"
-                    $("#ModeloId").empty();
-                    // Itera sobre la lista de modelos recibida
-                    $.each(data, function (index, row) {
-                        // Agrega opciones al elemento "ModeloId" con los valores y nombres de los modelos
-                        $("#ModeloId").append("<option value='" + row.id + "'>" + row.nombre + "</option>")
+                var marcaId = $(this).val();
+                if (marcaId === "") {
+                    $("#marcaError").text("Por favor, selecciona una marca válida.");
+                    // Mostrar alerta si hay mensajes en TempData
+                    var showAlertType = '@TempData["ShowAlertType"]';
+                    var showAlertTitle = '@TempData["ShowAlertTitle"]';
+                    var showAlertMessage = '@TempData["ShowAlertMessage"]';
+                    if (showAlertType && showAlertTitle && showAlertMessage) {
+                        showAlert(showAlertType, showAlertTitle, showAlertMessage);
+                }
+                else {
+                    $("#marcaError").text(""); // Limpiar el mensaje de error
+                    // Hacer la solicitud AJAX y actualizar la lista desplegable de modelos
+                    $.get("/Impresoras/GetModelos", { MarcaId: marcaId }, function (data) {
+                        $("#ModeloId").empty();
+                        $.each(data, function (index, row) {
+                            $("#ModeloId").append("<option value='" + row.id + "'>" + row.nombre + "</option>")
+                        });
                     });
-                });
-            })
+                }
+            });
         });
     </script>
     <!---------------  Codigo para actualización dinamica Areas y unidades ------------->
@@ -99,7 +130,7 @@
         $(document).ready(function () {
             // Agrega un controlador de eventos al elemento con el ID "AreaId"
             $("#AreaId").change(function () {
-                 // Hace una solicitud GET a la ruta "/Modelos/GetModelos"
+                // Hace una solicitud GET a la ruta "/Modelos/GetModelos"
                 $.get("/Impresoras/GetUnidades", { AreaId: $("#AreaId").val() }, function (data) {
                     // Vacía el contenido del elemento con el ID "ModeloId"
                     $("#UnidadId").empty();
@@ -145,8 +176,6 @@
             // Otros eventos similares para las demás listas desplegables
         });
     </script>
-
-
 }
 @*
   <!---------------  Codigo para actualización dinamica utilizando DropDownList  ------------->
@@ -169,4 +198,24 @@
             });
         </script>
 }
+<!---------------  Esta Opcion funciona bien se modificó por recomendacion IA  ------------->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Agrega un controlador de eventos al elemento con el ID "MarcaId"
+            $("#MarcaId").change(function () {
+                // Hace una solicitud GET a la ruta "/Modelos/GetModelos"
+                $.get("/Impresoras/GetModelos", { MarcaId: $("#MarcaId").val() }, function (data) {
+                    // Vacía el contenido del elemento con el ID "ModeloId"
+                    $("#ModeloId").empty();
+                    // Itera sobre la lista de modelos recibida
+                    $.each(data, function (index, row) {
+                        // Agrega opciones al elemento "ModeloId" con los valores y nombres de los modelos
+                        $("#ModeloId").append("<option value='" + row.id + "'>" + row.nombre + "</option>")
+                    });
+                });
+            })
+        });
+    </script>
+
+
 *@

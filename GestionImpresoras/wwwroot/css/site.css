@@ -26,3 +26,19 @@ body {
 .validation-summary-errors {
     display: none;
 }
+.custom-validation-summary {
+    background-color: #f8d7da; /* Color de fondo personalizado */
+    color: #721c24; /* Color de texto personalizado */
+    border: 1px solid #f5c6cb; /* Borde personalizado */
+    padding: 10px; /* Espaciado interno personalizado */
+    font-size: 14px; /* Tamaño de fuente personalizado */
+}
+
+.custom-error-message {
+    background-color: #f8d7da; /* Color de fondo personalizado */
+    color: #721c24; /* Color de texto personalizado */
+    border: 1px solid #f5c6cb; /* Borde personalizado */
+    padding: 10px; /* Espaciado interno personalizado */
+    font-size: 14px; /* Tamaño de fuente personalizado */
+    margin-bottom: 20px; /* Agrega espacio inferior para separar del formulario */
+}
