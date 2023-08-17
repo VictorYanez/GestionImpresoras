@@ -31,12 +31,7 @@ namespace GestionImpresoras.Controllers
         public async Task<IActionResult> Crear()
         {
             // Llenar las ViewBag con los datos necesarios para repoblar los campos
-            ViewBag.EstadoId = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            ViewBag.MarcaId = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            ViewBag.ModeloId = new List<SelectListItem>(); // Inicialmente vacía
-            ViewBag.InstitucionId = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-            ViewBag.UnidadId = new List<SelectListItem>(); // Inicialmente vacía
+            await CargarDatosViewBag();
 
             if (!await _contexto.Marcas.AnyAsync())
             {
@@ -116,13 +111,7 @@ namespace GestionImpresoras.Controllers
                 }
             }
             // Llenar las ViewBag con los datos necesarios para repoblar los campos
-            ViewBag.EstadoId = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            ViewBag.MarcaId = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            ViewBag.ModeloId = await _contexto.Modelos.Where(m => m.MarcaId == impresora.MarcaId).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
-            ViewBag.InstitucionId = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
-            ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-            ViewBag.UnidadId = await _contexto.Unidades.Where(a => a.AreaId == impresora.AreaId).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
-            // ...
+            await CargarDatosViewBag();
             return View(impresora);
         }
         // Devolver listados de Modelos correpondientes a dicha marca
@@ -152,8 +141,8 @@ namespace GestionImpresoras.Controllers
             var unidadesAsociadas = _contexto.Unidades.Any(a => a.AreaId == areaId);
             if (!unidadesAsociadas)
             {
-                var errorMessage = "La marca seleccionada no tiene modelos asociados.";
-                ModelState.AddModelError("ModeloId", errorMessage); // Agregar error al ModelState
+                var errorMessage = "El área seleccionada no tiene unidades asociadas.";
+                ModelState.AddModelError("UnidadId", errorMessage); // Agregar error al ModelState
                 ShowAlert("warning", "Advertencia", errorMessage); // Mostrar alerta
                 TempData["ShowAlertType"] = "warning";
                 TempData["ShowAlertTitle"] = "Advertencia";
@@ -165,7 +154,18 @@ namespace GestionImpresoras.Controllers
                 .ToList();
             return Json(unidades);
         }
-
+        private async Task CargarDatosViewBag()
+        {
+            // ListItem de tablas Independientes (Maestro-Detalle) 
+            ViewBag.EstadoId = await _contexto.Estados.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+            ViewBag.InstitucionId = await _contexto.Instituciones.Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Nombre }).ToListAsync();
+            // ListItem de tablas Maestras (Maestro-Detalle) 
+            ViewBag.MarcaId = await _contexto.Marcas.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.AreaId = await _contexto.Areas.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+            // ListItem de tablas Detalles (Maestro-Detalle) 
+            ViewBag.ModeloId = await _contexto.Modelos.Where(m => m.MarcaId == 0).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Nombre }).ToListAsync();
+            ViewBag.UnidadId = await _contexto.Unidades.Where(a => a.AreaId == 0).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]  //Para validar ataques 
         public async Task<IActionResult> Creater([Bind("Id,CodigoActivoFijo,MarcaId,ModeloId,EstadoId,DireccionIP")] Impresora impresora)
