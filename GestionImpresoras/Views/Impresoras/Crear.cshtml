@@ -95,7 +95,51 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <!---------------  Codigo Script para actualización dinámica de Modelos ------------->
+    <!---------------  Codigo Script para actualización dinámica de Modelos y Unidades ------------->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Función para actualizar las listas desplegables
+            function actualizarListaDesplegable(selectElementId, url, idParamName, parentElementId) {
+                var parentId = $(parentElementId).val();
+                $.get(url, { [idParamName]: parentId }, function (data) {
+                    var selectElement = $(selectElementId);
+                    selectElement.empty();
+                    $.each(data, function (index, row) {
+                        selectElement.append("<option value='" + row.id + "'>" + row.nombre + "</option>")
+                    });
+                });
+            }
+
+            // Evento de cambio en la lista de Marca
+            $("#MarcaId").change(function () {
+                var marcaId = $(this).val();
+                if (marcaId === "") {
+                    showAlert("error", "Error", "Por favor, selecciona una marca válida.");
+                } else {
+                    actualizarListaDesplegable("#ModeloId", "/Impresoras/GetModelos", "marcaId", "#MarcaId");
+                }
+            });
+
+            // Evento de cambio en la lista de Área
+            $("#AreaId").change(function () {
+                var areaId = $(this).val();
+                if (areaId === "") {
+                    showAlert("error", "Error", "Por favor, selecciona un área válida.");
+                } else {
+                    actualizarListaDesplegable("#UnidadId", "/Impresoras/GetUnidades", "areaId", "#AreaId");
+                }
+            });
+
+            // Mostrar alerta si hay mensajes en TempData
+            var showAlertType = '@TempData["ShowAlertType"]';
+            var showAlertTitle = '@TempData["ShowAlertTitle"]';
+            var showAlertMessage = '@TempData["ShowAlertMessage"]';
+            if (showAlertType && showAlertTitle && showAlertMessage) {
+                showAlert(showAlertType, showAlertTitle, showAlertMessage);
+            }
+        });
+
+@*
     <script type="text/javascript">
         $(document).ready(function () {
             // Evento de cambio en la lista desplegable de marca
@@ -133,6 +177,7 @@
             })
         });
     </script>
+    *@
     <!---------------  Codigo para verificar si existen tablas vacias  ------------->
     @if (!ViewData.ModelState.IsValid)
     {
