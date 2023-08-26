@@ -95,7 +95,6 @@ namespace GestionImpresoras.Controllers
         [HttpPost]
         public async Task<IActionResult> Crear(Impresora impresora)
         {
-            var nadaTemp = impresora.CodigoActivoFijo.ToString();
             if (ModelState.IsValid)
             {
                 // Validar campos de selección
@@ -118,6 +117,7 @@ namespace GestionImpresoras.Controllers
         public JsonResult GetModelos(int marcaId)
         {
             // Verificar si la marca tiene modelos asociados
+            
             var modelosAsociados = _contexto.Modelos.Any(m => m.MarcaId == marcaId);
             if (!modelosAsociados)
             {
@@ -141,7 +141,7 @@ namespace GestionImpresoras.Controllers
             var unidadesAsociadas = _contexto.Unidades.Any(a => a.AreaId == areaId);
             if (!unidadesAsociadas)
             {
-                var errorMessage = "El área seleccionada no tiene unidades asociadas.";
+                var errorMessage = "El area seleccionada no tiene unidades asociadas.";
                 ModelState.AddModelError("UnidadId", errorMessage); // Agregar error al ModelState
                 ShowAlert("warning", "Advertencia", errorMessage); // Mostrar alerta
                 TempData["ShowAlertType"] = "warning";

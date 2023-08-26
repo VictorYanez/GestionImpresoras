@@ -10473,24 +10473,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\victor.yanez\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Administrador\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\GestionImpresoras.csproj",
+      "projectUniqueName": "C:\\Users\\Administrador\\source\\repos\\GestionImpresoras\\GestionImpresoras\\GestionImpresoras.csproj",
       "projectName": "GestionImpresoras",
-      "projectPath": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\GestionImpresoras.csproj",
-      "packagesPath": "C:\\Users\\victor.yanez\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\victor.yanez\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\",
+      "projectPath": "C:\\Users\\Administrador\\source\\repos\\GestionImpresoras\\GestionImpresoras\\GestionImpresoras.csproj",
+      "packagesPath": "C:\\Users\\Administrador\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Administrador\\source\\repos\\GestionImpresoras\\GestionImpresoras\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\victor.yanez\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Administrador\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -10498,7 +10493,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -10567,7 +10561,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

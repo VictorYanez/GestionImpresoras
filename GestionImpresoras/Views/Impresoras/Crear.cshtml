@@ -7,8 +7,21 @@
 <h1>Crear Impresora</h1>
 <h5>Se refiere a las Impresora utilizadas en la institución </h5>
 <hr />
+<!--------------- Codigo para verificar si existen tablas vacias------------->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger" role="alert">
+        @foreach (var modelState in ViewData.ModelState.Values)
+        {
+            foreach (var error in modelState.Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        }
+    </div>
+}
 <form asp-action="Crear" asp-controller="Impresoras" method="post">
-    <!-- Cuerpo del formulario -->
+    <!--- Cuerpo del formulario --->
     <!--- Definición de Código de Activo Fijo  ---->
     <div class="mb-3 form-group">
         <label asp-for="CodigoActivoFijo " class="form-label">Codigo Activo Fijo</label>
@@ -103,31 +116,17 @@
                     actualizarListaDesplegable("#ModeloId", "/Impresoras/GetModelos", "marcaId", "#MarcaId");
                 }
             });
-            // Mostrar alerta si hay mensajes en TempData
-            var showAlertType = '@TempData["ShowAlertType"]';
-            var showAlertTitle = '@TempData["ShowAlertTitle"]';
-            var showAlertMessage = '@TempData["ShowAlertMessage"]';
-            if (showAlertType && showAlertTitle && showAlertMessage) {
-                showAlert(showAlertType, showAlertTitle, showAlertMessage);
-            }
-        });
 
-        <!--------------- Codigo para verificar si existen tablas vacias------------->
-        @if (!ViewData.ModelState.IsValid)
-        {
-                <div class="alert alert-danger" role = "alert" >
-                @foreach (var modelState in ViewData.ModelState.Values)
-                {
-                    foreach (var error in modelState.Errors)
-                    {
-                            <p>@error.ErrorMessage</p>
-                    }
+            // Evento de cambio en la lista de Área
+            $("#AreaId").change(function () {
+                var areaId = $(this).val();
+                if (areaId === "") {
+                    showAlert("error", "Error", "Por favor, selecciona un área válida.");
+                } else {
+                    actualizarListaDesplegable("#UnidadId", "/Impresoras/GetUnidades", "areaId", "#AreaId");
                 }
-                </div>
-        }
-            //------------   ... Mensajes  ... ------------------
-    <script type="text/javascript">
-        $(document).ready(function () {
+            });
+
             // Mostrar alerta si hay mensajes en TempData
             var showAlertType = '@TempData["ShowAlertType"]';
             var showAlertTitle = '@TempData["ShowAlertTitle"]';
@@ -136,9 +135,6 @@
                 showAlert(showAlertType, showAlertTitle, showAlertMessage);
             }
         });
-    </script>
 
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    </script>
 }
