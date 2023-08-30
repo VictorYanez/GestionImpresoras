@@ -3,18 +3,22 @@ using GestionImpresoras.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using GestionImpresoras.Services; 
+
 namespace GestionImpresoras.Controllers
 {
     public class SolicitudesController : Controller
     {
         private readonly ApplicationDBContext _contexto;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly EmailService _emailService;
         private readonly String folderSolicitudes = @"imagenes\solicitudes";
 
-        public SolicitudesController(ApplicationDBContext contexto, IWebHostEnvironment webHostEnvironment)
+        public SolicitudesController(ApplicationDBContext contexto, IWebHostEnvironment webHostEnvironment, EmailService emailService)
         {
             this._contexto = contexto;
             this._webHostEnvironment = webHostEnvironment;
+            this._emailService = emailService;
         }
 
         [HttpGet]
@@ -67,7 +71,6 @@ namespace GestionImpresoras.Controllers
                 //  Capturo los archivos seleccionados 
                 var archivos = HttpContext.Request.Form.Files;
                 string rootPath = _webHostEnvironment.WebRootPath;
-
                 // Verifica si se está cargando un archivo
                 if (archivos.Count > 0)
                 {
@@ -94,6 +97,8 @@ namespace GestionImpresoras.Controllers
                 }
                 _contexto.Solicitudes.Add(solicitud);
                 await _contexto.SaveChangesAsync();
+                string toSend = null, subject = null, textBody = null;
+                await _emailService.SendEmail(toSend, subject, textBody);   ;
                 return RedirectToAction(nameof(Index));
             }
             ///<!----------------------  Grupo de SelectListItems --------------------------->

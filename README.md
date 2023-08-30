@@ -1,10 +1,19 @@
 # GestionImpresoras  versión consolidada y revisada 
  
-Recursos Utilizados 
+Recursos Utilizados
+Del lado del FrontEnd 
+
 Para creacion de Tablas 
 https://datatables.net/
 CSS: <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
 JS : <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+https://jqueryui.com/
+
+Correspondencia:
+https://github.com/myloveCc/NETCore.MailKit
+Mensajes:
+sweetalert2:  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 Iconos de Boostrap  (CDN)
 https://icons.getbootstrap.com/

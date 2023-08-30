@@ -1,4 +1,5 @@
 using GestionImpresoras.Data;
+using GestionImpresoras.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,9 @@ builder.Services.AddControllersWithViews();
 //Configuración de la conexión a SQL Server local (Archivo de contexto)
 builder.Services.AddDbContext<ApplicationDBContext>(opciones =>
 opciones.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-       // (Otra sintaxis)  opciones.UseSqlServer("name=DefaultConnection"));
+// (Otra sintaxis)  opciones.UseSqlServer("name=DefaultConnection"));
+
+builder.Services.AddSingleton<EmailService>();
 
 
 var app = builder.Build();
