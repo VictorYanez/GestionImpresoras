@@ -1,12 +1,13 @@
 ﻿using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using GestionImpresoras.Models;
 
 namespace GestionImpresoras.Services
 {
     public class EmailService
     {
-        public async Task SendEmail(string toSend, string subject, string message)
+        public async Task SendEmail(string tipo, Solicitud solicitud)
         {
            
             toSend = "correos.vmt@gmail.com";
@@ -23,6 +24,14 @@ namespace GestionImpresoras.Services
                 Text = message
             };
 
+            // Crear el cuerpo del correo en formato de texto plano
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.TextBody = CreateEmailBody(tipo, solicitud.FechaSolicitud.ToString(), solicitud.Correo, solicitud.Solicitante, solicitud.ImpresoraId.ToString(), solicitud.Color);
+            email.Body = bodyBuilder.ToMessageBody();
+
+            // Enviar el correo electrónico
+
+
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 465, SecureSocketOptions.Auto);
@@ -30,6 +39,31 @@ namespace GestionImpresoras.Services
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);
             }
+        }
+
+        public string CreateEmailBody(string tipo, string fechaSolicitud, string correo, string solicitante, string impresoraId, string color)
+        {
+            // Crear el cuerpo del correo en función del tipo de correo
+            string body = "";
+            if (tipo == "registro")
+            {
+                body = $"Se ha registrado una nueva solicitud con los siguientes datos:\n" +
+                       $"Fecha de Solicitud: {fechaSolicitud}\n" +
+                       $"Correo: {correo}\n" +
+                       $"Solicitante: {solicitante}\n" +
+                       $"ImpresoraId: {impresoraId}\n" +
+                       $"Color: {color}";
+            }
+            else if (tipo == "recepcion")
+            {
+                body = $"Se ha recibido el tóner solicitado con los siguientes datos:\n" +
+                       $"Fecha de Solicitud: {fechaSolicitud}\n" +
+                       $"Correo: {correo}\n" +
+                       $"Solicitante: {solicitante}\n" +
+                       $"ImpresoraId: {impresoraId}\n" +
+                       $"Color: {color}";
+            }
+            return body;
         }
     }
 }

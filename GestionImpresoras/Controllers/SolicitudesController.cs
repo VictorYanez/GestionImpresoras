@@ -97,8 +97,8 @@ namespace GestionImpresoras.Controllers
                 }
                 _contexto.Solicitudes.Add(solicitud);
                 await _contexto.SaveChangesAsync();
-                string toSend = null, subject = null, textBody = null;
-                await _emailService.SendEmail(toSend, subject, textBody);   ;
+                string tipoCorreo = "registro"; 
+                await _emailService.SendEmail("registro", solicitud);  
                 return RedirectToAction(nameof(Index));
             }
             ///<!----------------------  Grupo de SelectListItems --------------------------->
