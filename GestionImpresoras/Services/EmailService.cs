@@ -9,29 +9,23 @@ namespace GestionImpresoras.Services
     {
         public async Task SendEmail(string tipo, Solicitud solicitud)
         {
-           
-            toSend = "correos.vmt@gmail.com";
-            subject = "Prueba de envio de correo";
-            message = "Cuerpo del correo ";
+            String toSend = solicitud.Solicitante;
+            String mailToSend = solicitud.Correo;
 
-            //  await client.AuthenticateAsync("correos.vmt@gmail.com", "ktjigqekuwmquzzw");
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("Test envio email", "correos.vmt@gmail.com"));
-            emailMessage.To.Add(new MailboxAddress("Test enviado toSend", toSend));
-            emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart("plain")
-            {
-                Text = message
-            };
+            emailMessage.To.Add(new MailboxAddress(toSend, mailToSend));
 
-            // Crear el cuerpo del correo en formato de texto plano
+            // Crear el cuerpo y el asunto del correo en función del tipo de correo
+            var emailBodyAndSubject = CreateEmailBodyAndSubject(tipo, solicitud);
+
+            emailMessage.Subject = emailBodyAndSubject.Subject;
+
             var bodyBuilder = new BodyBuilder();
-            bodyBuilder.TextBody = CreateEmailBody(tipo, solicitud.FechaSolicitud.ToString(), solicitud.Correo, solicitud.Solicitante, solicitud.ImpresoraId.ToString(), solicitud.Color);
-            email.Body = bodyBuilder.ToMessageBody();
+            bodyBuilder.TextBody = emailBodyAndSubject.Body;
+            emailMessage.Body = bodyBuilder.ToMessageBody();
 
             // Enviar el correo electrónico
-
-
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 465, SecureSocketOptions.Auto);
@@ -41,29 +35,39 @@ namespace GestionImpresoras.Services
             }
         }
 
-        public string CreateEmailBody(string tipo, string fechaSolicitud, string correo, string solicitante, string impresoraId, string color)
+        public EmailBodyAndSubject CreateEmailBodyAndSubject(string tipo, Solicitud solicitud)
         {
-            // Crear el cuerpo del correo en función del tipo de correo
             string body = "";
+            string subject = "";
+
             if (tipo == "registro")
             {
                 body = $"Se ha registrado una nueva solicitud con los siguientes datos:\n" +
-                       $"Fecha de Solicitud: {fechaSolicitud}\n" +
-                       $"Correo: {correo}\n" +
-                       $"Solicitante: {solicitante}\n" +
-                       $"ImpresoraId: {impresoraId}\n" +
-                       $"Color: {color}";
+                       $"Fecha de Solicitud: {solicitud.FechaSolicitud}\n" +
+                       $"Correo: {solicitud.Correo}\n" +
+                       $"Solicitante: {solicitud.Solicitante}\n" +
+                       $"ImpresoraId: {solicitud.ImpresoraId}\n" +
+                       $"Color: {solicitud.Color}";
+                subject = "Correo de registro de Solicitud";
             }
             else if (tipo == "recepcion")
             {
                 body = $"Se ha recibido el tóner solicitado con los siguientes datos:\n" +
-                       $"Fecha de Solicitud: {fechaSolicitud}\n" +
-                       $"Correo: {correo}\n" +
-                       $"Solicitante: {solicitante}\n" +
-                       $"ImpresoraId: {impresoraId}\n" +
-                       $"Color: {color}";
+                       $"Fecha de Solicitud: {solicitud.FechaSolicitud}\n" +
+                       $"Correo: {solicitud.Correo}\n" +
+                       $"Solicitante: {solicitud.Solicitante}\n" +
+                       $"ImpresoraId: {solicitud.ImpresoraId}\n" +
+                       $"Color: {solicitud.Color}";
+                subject = "Correo de recepción de tóner";
             }
-            return body;
+
+            return new EmailBodyAndSubject { Body = body, Subject = subject };
         }
+    }
+
+    public class EmailBodyAndSubject
+    {
+        public string Body { get; set; }
+        public string Subject { get; set; }
     }
 }
