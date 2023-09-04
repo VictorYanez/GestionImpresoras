@@ -12,7 +12,7 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <!---  Para Lista de Impresoras   -->
     <div class="mb-3 form-group">
-        <label asp-for="ImpresoraId" class="form-label">Impresora</label>
+        <label asp-for="ImpresoraId " class="form-label">Impresora</label>
         <select class="form-select form-select sm" asp-for="ImpresoraId" asp-items="ViewBag.ImpresoraId">
             <option> --- Seleccionar Impresora --- </option>
         </select>
@@ -45,6 +45,12 @@
         <label asp-for="Solicitante" class="form-label">Solicitante</label>
         <input type="text" asp-for="Solicitante" class="form-control" placeholder="Ingrese la persona Solicitante" />
         <span asp-validation-for="Solicitante" class="text-danger"></span>
+    </div>
+    <!--- Para Email   -->
+    <div class="mb-3 form-group">
+        <label asp-for="Email" class="form-label">Solicitante</label>
+        <input type="text" asp-for="Email" class="form-control" placeholder="Ingrese el correo del Solicitante" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <!--- Para Lista de Medio Solicitado   -->
     <div class="mb-3 form-group">

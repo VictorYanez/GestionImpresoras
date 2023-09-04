@@ -10,7 +10,7 @@ namespace GestionImpresoras.Services
         public async Task SendEmail(string tipo, Solicitud solicitud)
         {
             String toSend = solicitud.Solicitante;
-            String mailToSend = solicitud.Correo;
+            String mailToSend = solicitud.Email;
 
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("Test envio email", "correos.vmt@gmail.com"));
@@ -44,9 +44,9 @@ namespace GestionImpresoras.Services
             {
                 body = $"Se ha registrado una nueva solicitud con los siguientes datos:\n" +
                        $"Fecha de Solicitud: {solicitud.FechaSolicitud}\n" +
-                       $"Correo: {solicitud.Correo}\n" +
                        $"Solicitante: {solicitud.Solicitante}\n" +
-                       $"ImpresoraId: {solicitud.ImpresoraId}\n" +
+                       $"Correo: {solicitud.Email}\n" +
+                       $"Impresora: {solicitud.Impresora.CodigoActivoFijo}\n" + // Aquí se incluye el CodigoActivoFijo
                        $"Color: {solicitud.Color}";
                 subject = "Correo de registro de Solicitud";
             }
@@ -54,15 +54,16 @@ namespace GestionImpresoras.Services
             {
                 body = $"Se ha recibido el tóner solicitado con los siguientes datos:\n" +
                        $"Fecha de Solicitud: {solicitud.FechaSolicitud}\n" +
-                       $"Correo: {solicitud.Correo}\n" +
+                       $"Correo: {solicitud.Email}\n" + // Corregir la propiedad Email
                        $"Solicitante: {solicitud.Solicitante}\n" +
-                       $"ImpresoraId: {solicitud.ImpresoraId}\n" +
+                       $"ImpresoraId: {solicitud.Impresora.CodigoActivoFijo}\n" + // Aquí se incluye el CodigoActivoFijo
                        $"Color: {solicitud.Color}";
                 subject = "Correo de recepción de tóner";
             }
 
             return new EmailBodyAndSubject { Body = body, Subject = subject };
         }
+
     }
 
     public class EmailBodyAndSubject

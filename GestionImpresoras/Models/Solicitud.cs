@@ -39,8 +39,9 @@ namespace GestionImpresoras.Models
         public virtual Medio Medio { get; set; } = null!; //Perdonar el nulo? y Ademas propiedad de navegacion 
 
         [Required]
+        [Display(Name = "Correo")]
         [EmailAddress(ErrorMessage = "No es una dirección de correo válida")]
-        public string Correo { get; set; }
+        public string Email { get; set; }
 
         [DataType(DataType.ImageUrl)]
         public string UrlImagen { get; set; }
