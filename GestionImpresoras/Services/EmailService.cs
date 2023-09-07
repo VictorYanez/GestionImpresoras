@@ -2,12 +2,13 @@
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using GestionImpresoras.Models;
+using GestionImpresoras.DTOs;
 
 namespace GestionImpresoras.Services
 {
     public class EmailService
     {
-        public async Task SendEmail(string tipo, Solicitud solicitud)
+        public async Task SendEmail(string tipo, Solicitud solicitud, EmailData emailData)
         {
             String toSend = solicitud.Solicitante;
             String mailToSend = solicitud.Email;
@@ -17,7 +18,7 @@ namespace GestionImpresoras.Services
             emailMessage.To.Add(new MailboxAddress(toSend, mailToSend));
 
             // Crear el cuerpo y el asunto del correo en función del tipo de correo
-            var emailBodyAndSubject = CreateEmailBodyAndSubject(tipo, solicitud);
+            var emailBodyAndSubject = CreateEmailBodyAndSubject(tipo, solicitud, emailData);
 
             emailMessage.Subject = emailBodyAndSubject.Subject;
 
@@ -35,7 +36,7 @@ namespace GestionImpresoras.Services
             }
         }
 
-        public EmailBodyAndSubject CreateEmailBodyAndSubject(string tipo, Solicitud solicitud)
+        public EmailBodyAndSubject CreateEmailBodyAndSubject(string tipo, Solicitud solicitud, EmailData emailData)
         {
             string body = "";
             string subject = "";
@@ -43,11 +44,12 @@ namespace GestionImpresoras.Services
             if (tipo == "registro")
             {
                 body = $"Se ha registrado una nueva solicitud con los siguientes datos:\n" +
-                       $"Fecha de Solicitud: {solicitud.FechaSolicitud}\n" +
-                       $"Solicitante: {solicitud.Solicitante}\n" +
-                       $"Correo: {solicitud.Email}\n" +
-                       $"Impresora: {solicitud.Impresora.CodigoActivoFijo}\n" + // Aquí se incluye el CodigoActivoFijo
-                       $"Color: {solicitud.Color}";
+                       $"Fecha de Solicitud: {emailData.FechaSolicitud}\n" +
+                       $"Solicitante: {emailData.Solicitante}\n" +
+                       $"Correo: {emailData.Correo}\n" +
+                       $"Impresora: {emailData.ImpresoraCodigo}\n" +
+                       $"Color: {emailData.ColorNombre}\n" +
+                       $"Estado Solicitud: {emailData.EstadoSolicitudNombre}";
                 subject = "Correo de registro de Solicitud";
             }
             else if (tipo == "recepcion")

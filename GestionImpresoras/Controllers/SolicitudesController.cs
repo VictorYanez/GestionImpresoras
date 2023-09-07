@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestionImpresoras.Services;
+using GestionImpresoras.DTOs;
 
 namespace GestionImpresoras.Controllers
 {
@@ -25,8 +26,8 @@ namespace GestionImpresoras.Controllers
         public async Task<IActionResult> Index()
         {
             var lista = await _contexto.Solicitudes
-                .Include(x => x.Impresora) // Cargar la propiedad Impresora
-                .ThenInclude(i => i.CodigoActivoFijo) // Cargar el CodigoActivoFijo de Impresora
+                .Include(x => x.Impresora)
+                // .ThenInclude(i => i.CodigoActivoFijo) // Cargar el CodigoActivoFijo de Impresora
                 .Include(x => x.Color)
                 .Include(x => x.EstadoSolicitud)
                 .ToListAsync();
@@ -101,8 +102,14 @@ namespace GestionImpresoras.Controllers
             }
             _contexto.Solicitudes.Add(solicitud);
             await _contexto.SaveChangesAsync();
-            string tipoCorreo = "registro";
-            await _emailService.SendEmail("registro", solicitud);
+
+                // Obtener la información para el correo
+                var emailData = await GetEmailData(solicitud.Id);
+                if (emailData != null)
+                {
+                    await _emailService.SendEmail("registro", solicitud, emailData);
+                }
+               
             return RedirectToAction(nameof(Index));
         }
         ///<!----------------------  Grupo de SelectListItems --------------------------->
@@ -112,8 +119,32 @@ namespace GestionImpresoras.Controllers
         ViewBag.MedioId = await _contexto.Medios.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Nombre }).ToListAsync();
         return View();
     }
-    // ----------------->>>>>   Metodos GET POST Solicitudes Editar
-    [HttpGet]
+        private async Task<EmailData> GetEmailData(int solicitudId)
+        {
+            var solicitud = await _contexto.Solicitudes
+                .Include(x => x.Impresora)
+                .Include(x => x.Color)
+                .Include(x => x.EstadoSolicitud)
+                .FirstOrDefaultAsync(x => x.Id == solicitudId);
+
+            if (solicitud != null)
+            {
+                var emailData = new EmailData
+                {
+                    FechaSolicitud = solicitud.FechaSolicitud,
+                    Solicitante = solicitud.Solicitante,
+                    Correo = solicitud.Email,
+                    ImpresoraCodigo = solicitud.Impresora.CodigoActivoFijo,
+                    ColorNombre = solicitud.Color.Nombre,
+                    EstadoSolicitudNombre = solicitud.EstadoSolicitud.Nombre
+                };
+                return emailData;
+            }
+
+            return null;
+        }
+        // ----------------->>>>>   Metodos GET POST Solicitudes Editar
+        [HttpGet]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
