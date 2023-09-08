@@ -820,13 +820,14 @@ C:\Users\Administrador\source\repos\GestionImpresoras\GestionImpresoras\obj\Debu
 C:\Users\Administrador\source\repos\GestionImpresoras\GestionImpresoras\obj\Debug\net6.0\GestionImpresoras.pdb
 C:\Users\Administrador\source\repos\GestionImpresoras\GestionImpresoras\obj\Debug\net6.0\GestionImpresoras.genruntimeconfig.cache
 C:\Users\Administrador\source\repos\GestionImpresoras\GestionImpresoras\obj\Debug\net6.0\ref\GestionImpresoras.dll
-C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\GestionImpresoras.dll
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\appsettings.json
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\GestionImpresoras.staticwebassets.runtime.json
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\GestionImpresoras.exe
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\GestionImpresoras.deps.json
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\GestionImpresoras.runtimeconfig.json
+C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\GestionImpresoras.dll
+C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\GestionImpresoras.pdb
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\Humanizer.dll
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\MailKit.dll
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\MessagePack.dll
@@ -1098,5 +1099,4 @@ C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\obj\Debug
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\obj\Debug\net6.0\refint\GestionImpresoras.dll
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\obj\Debug\net6.0\GestionImpresoras.pdb
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\obj\Debug\net6.0\GestionImpresoras.genruntimeconfig.cache
-C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\bin\Debug\net6.0\GestionImpresoras.pdb
 C:\Users\victor.yanez\source\repos\GestionImpresoras\GestionImpresoras\obj\Debug\net6.0\ref\GestionImpresoras.dll

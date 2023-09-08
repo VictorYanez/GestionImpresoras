@@ -27,7 +27,6 @@ namespace GestionImpresoras.Controllers
         {
             var lista = await _contexto.Solicitudes
                 .Include(x => x.Impresora)
-                // .ThenInclude(i => i.CodigoActivoFijo) // Cargar el CodigoActivoFijo de Impresora
                 .Include(x => x.Color)
                 .Include(x => x.EstadoSolicitud)
                 .ToListAsync();

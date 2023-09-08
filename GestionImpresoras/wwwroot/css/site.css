@@ -42,3 +42,6 @@ body {
     font-size: 14px; /* Tamaño de fuente personalizado */
     margin-bottom: 20px; /* Agrega espacio inferior para separar del formulario */
 }
+#sortable tr {
+    cursor: move;
+}

@@ -113,7 +113,7 @@ namespace GestionImpresoras.Controllers
             }
             else
             {
-                var contacto = _contexto.Estados.Find(id);
+                var contacto = _contexto.EstadoSolicitudes.Find(id);
                 if (contacto == null)
                 {
                     return RedirectToAction("Noencontrado", "Home");

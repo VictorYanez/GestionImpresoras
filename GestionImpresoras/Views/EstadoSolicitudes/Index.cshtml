@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1 class="text-center">CRUD Estado Solicitudes</h1>
+<h1 class="text-center">Listado de Estado Solicitudes</h1>
 <div class="row">
     <div class="offset-9 col-3 mb-3">
         <div class="float-right">
@@ -29,6 +29,7 @@
                     <table class="table table-bordered" id="tablaEstados" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>@Html.DisplayNameFor(m => m.Orden)</th>
                                 <th>@Html.DisplayNameFor(m => m.Nombre)</th>
                                 <th>@Html.DisplayNameFor(m => m.Descripcion)</th>
                                 <th>Acciones</th>
@@ -38,6 +39,7 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
+                                    <td>@Html.DisplayFor(m => item.Orden)</td>
                                     <td>@Html.DisplayFor(m => item.Nombre)</td>
                                     <td>@Html.DisplayFor(m => item.Descripcion)</td>
                                     <td>
@@ -92,5 +94,49 @@
                 }
             });
         });
+
+        //Para reordenar registros en la tabla 
+        const urlOrdenar = '@Url.Action("ordenar")';
+
+        $(function () {
+            $("#sortable").sortable({
+                stop: async function (e, ui) {
+                    await actualizarOrdenes();
+                }
+            });
+
+            async function actualizarOrdenes() {
+                const ids = obtenerIdsDeElementos();
+                await enviarIdsAlBackend(ids);
+            }
+
+            function obtenerIdsDeElementos() {
+                const ids = $(".ids").map(function () {
+                    return $(this).val();
+                }).get();
+
+                return ids;
+            }
+
+            async function enviarIdsAlBackend(ids) {
+                var data = JSON.stringify(ids);
+
+                await fetch(urlOrdenar, {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            }
+        })
+
+        $(document).ready(function () {
+            var tablaEstados = $('#tablaEstados').DataTable({
+                rowReorder: true,
+            });
+
+
+
     </script>
 }
