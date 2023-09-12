@@ -1,0 +1,31 @@
+﻿@model GestionImpresoras.Models.Solicitud
+
+@{
+    ViewData["Title"] = "Cambiar Estado de Solicitud";
+}
+
+<h1>Cambiar Estado de Solicitud</h1>
+
+<form asp-action="ChangeStatus" asp-controller="Solicitudes" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label asp-for="EstadoSolicitudId">Nuevo Estado</label>
+        <select asp-for="EstadoSolicitudId" class="form-control">
+            @foreach (var estado in ViewBag.Estados)
+            {
+                <option value="@estado.Id">@estado.Nombre</option>
+            }
+        </select>
+    </div>
+
+    <input type="hidden" asp-for="Id" />
+
+    <!---------------  Botones summit y cancelar  ------------->
+    <button type="submit" class="btn btn-primary"><i class="bi bi-pencil-fill"></i> Enviar</button>
+    <a class="btn btn-secondary" asp-action="Index"><i class="bi bi-backspace"></i> Cancelar</a>
+
+    <button type="submit" class="btn btn-primary">Cambiar Estado</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver a la Lista</a>
+</form>
+

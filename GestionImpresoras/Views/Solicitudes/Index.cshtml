@@ -55,6 +55,10 @@
                                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
                                             <i class="bi bi-eraser"></i> Borrar
                                         </a>
+                                        <a class="btn btn-success" asp-action="ChangeStatus" asp-route-id="@item.Id">
+                                            <i class="bi bi-arrow-repeat"></i> Estado
+                                        </a>
+
                                     </td>
                                 </tr>
                             }
