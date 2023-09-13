@@ -9,7 +9,8 @@
     <div class="offset-9 col-3 mb-3">
         <div class="float-right">
             <a asp-action="Create" asp-controller="Solicitudes" class="btn btn-success d-block mx-auto btn-lg">
-                <i class="bi bi-file-plus"></i>Nueva Solicitud
+                <i class="bi bi-file-plus"></i> Nueva Solicitud
+
             </a>
         </div>
     </div>
@@ -50,10 +51,11 @@
                                             <i class="bi bi-pencil"></i> Editar
                                         </a>
                                         <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
-                                            <i class="bi bi-info-circle"></i> Detalle
+                                            <i class="bi bi-eye"></i> Ver
                                         </a>
                                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
-                                            <i class="bi bi-eraser"></i> Borrar
+                                            <i class="bi bi-trash3"></i> Borrar
+                                            <!---------------  "<i class="bi bi-eraser"></i>"  ------------->
                                         </a>
                                         <a class="btn btn-success" asp-action="ChangeStatus" asp-route-id="@item.Id">
                                             <i class="bi bi-arrow-repeat"></i> Estado
