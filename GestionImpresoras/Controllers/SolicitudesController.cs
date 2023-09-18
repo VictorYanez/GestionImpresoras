@@ -326,7 +326,22 @@ namespace GestionImpresoras.Controllers
                 return NotFound();
             }
 
-            ViewBag.Estados = await _contexto.EstadoSolicitudes.ToListAsync();
+            // Obtener el estado máximo
+            var estadoMaximo = await _contexto.EstadoSolicitudes
+                .OrderByDescending(es => es.Orden)
+                .FirstOrDefaultAsync();
+
+            // Verificar si la solicitud ya está en el estado máximo
+            if (solicitud.EstadoSolicitud.Orden >= estadoMaximo.Orden)
+            {
+                TempData["Message"] = "La solicitud ya está en el estado máximo.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Filtra los estados con orden mayor que el estado actual
+            ViewBag.Estados = await _contexto.EstadoSolicitudes
+                .Where(es => es.Orden > solicitud.EstadoSolicitud.Orden)
+                .ToListAsync();
 
             return View(solicitud);
         }
