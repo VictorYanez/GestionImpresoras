@@ -1,5 +1,6 @@
-﻿@using GestionImpresoras.Models;
-@model IEnumerable<Solicitud>
+﻿@using GestionImpresoras.DTOs;
+@using GestionImpresoras.Models;
+@model IEnumerable<SolicitudShowDTO>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -29,11 +30,11 @@
                     <table class="table table-bordered" id="tablaImpresoras" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>@Html.DisplayNameFor(m => m.Impresora.CodigoActivoFijo)</th>
-                                <th>@Html.DisplayNameFor(m => m.EstadoSolicitud.Nombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.Color.Nombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.FechaSolicitud)</th>
-                                <th>@Html.DisplayNameFor(m => m.Solicitante)</th>
+                                <th>@Html.DisplayNameFor(m => m.Solicitud.Impresora.CodigoActivoFijo)</th>
+                                <th>@Html.DisplayNameFor(m => m.Solicitud.EstadoSolicitud.Nombre)</th>
+                                <th>@Html.DisplayNameFor(m => m.Solicitud.Color.Nombre)</th>
+                                <th>@Html.DisplayNameFor(m => m.Solicitud.FechaSolicitud)</th>
+                                <th>@Html.DisplayNameFor(m => m.Solicitud.Solicitante)</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -41,27 +42,40 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@item.Impresora.CodigoActivoFijo</td>
-                                    <td>@item.EstadoSolicitud.Nombre</td>
-                                    <td>@item.Color.Nombre</td>
-                                    <td>@item.FechaSolicitud?.ToString("dd/MM/yyyy")</td>
-                                    <td>@item.Solicitante</td>
+                                    <td>@item.Solicitud.Impresora.CodigoActivoFijo</td>
+                                    <td>@item.Solicitud.EstadoSolicitud.Nombre</td>
+                                    <td>@item.Solicitud.Color.Nombre</td>
+                                    <td>@item.Solicitud.FechaSolicitud?.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.Solicitud.Solicitante</td>
                                     <td>
-                                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">
+                                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Solicitud.Id">
                                             <i class="bi bi-pencil"></i> Editar
                                         </a>
-                                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
+                                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Solicitud.Id">
                                             <i class="bi bi-eye"></i> Ver
                                         </a>
-                                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Solicitud.Id">
                                             <i class="bi bi-trash3"></i> Borrar
                                             <!---------------  "<i class="bi bi-eraser"></i>"  ------------->
                                         </a>
-                                        <a class="btn btn-warning" asp-action="ChangeStatus" asp-route-id="@item.Id">
-                                            <i class="bi bi-check2-square"></i> Estado
-                                            <!---------------  "<i class="bi bi-arrow-repeat"></i>"  ------------->
-                                        </a>
-
+                                        @*
+                                <a class="btn btn-warning" asp-action="ChangeStatus" asp-route-id="@item.Id">
+                                <i class="bi bi-check2-square"></i> Estado
+                                <!---------------  "<i class="bi bi-arrow-repeat"></i>"  ------------->
+                                </a>
+                                *@
+                                        @if (!item.EnEstadoMaximo)
+                                        {
+                                            <a class="btn btn-warning" asp-action="ChangeStatus" asp-route-id="@item.Solicitud.Id">
+                                                <i class="bi bi-check2-square"></i> Estado
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-warning" disabled>
+                                                <i class="bi bi-check2-square"></i> Estado
+                                            </button>
+                                        }
                                     </td>
                                 </tr>
                             }

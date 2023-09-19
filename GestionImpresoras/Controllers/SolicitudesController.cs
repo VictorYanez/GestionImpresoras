@@ -23,16 +23,27 @@ namespace GestionImpresoras.Controllers
         }
 
         [HttpGet]
+        // Acción para mostrar la vista Index
         public async Task<IActionResult> Index()
         {
+            // Encontrar el valor máximo de EstadoSolicitud
+            var estadoMaximo = await _contexto.EstadoSolicitudes
+                .OrderByDescending(es => es.Orden)
+                .FirstOrDefaultAsync();
+
             var lista = await _contexto.Solicitudes
                 .Include(x => x.Impresora)
                 .Include(x => x.Color)
                 .Include(x => x.EstadoSolicitud)
+                .Select(s => new SolicitudShowDTO
+                {
+                    Solicitud = s,
+                    EnEstadoMaximo = s.EstadoSolicitud.Orden == estadoMaximo.Orden
+                })
                 .ToListAsync();
+
             return View(lista);
         }
-
 
         // Metodos GET POST Solicitudes Crear
         [HttpGet]
@@ -310,6 +321,7 @@ namespace GestionImpresoras.Controllers
         }
 
         // Acción para mostrar el formulario de cambio de estado
+        [HttpGet]
         public async Task<IActionResult> ChangeStatus(int? id)
         {
             if (id == null)
@@ -324,18 +336,6 @@ namespace GestionImpresoras.Controllers
             if (solicitud == null)
             {
                 return NotFound();
-            }
-
-            // Obtener el estado máximo
-            var estadoMaximo = await _contexto.EstadoSolicitudes
-                .OrderByDescending(es => es.Orden)
-                .FirstOrDefaultAsync();
-
-            // Verificar si la solicitud ya está en el estado máximo
-            if (solicitud.EstadoSolicitud.Orden >= estadoMaximo.Orden)
-            {
-                TempData["Message"] = "La solicitud ya está en el estado máximo.";
-                return RedirectToAction(nameof(Index));
             }
 
             // Filtra los estados con orden mayor que el estado actual

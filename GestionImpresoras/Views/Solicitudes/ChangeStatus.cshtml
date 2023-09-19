@@ -1,26 +1,13 @@
 ﻿@model GestionImpresoras.Models.Solicitud
-
 @{
     ViewData["Title"] = "Cambiar Estado de Solicitud";
 }
 
 <h1>Cambiar Estado de Solicitud</h1>
-
 <form asp-action="ChangeStatus" asp-controller="Solicitudes" method="post">
     @Html.AntiForgeryToken()
 
     <!--- ListItem de Estado de Solicitud del formulario   -->
-    <div class="mb-3 form-group">
-        <label asp-for="EstadoSolicitudId" class="form-label">Cambiar Estado</label>
-        <select asp-for="EstadoSolicitudId" class="form-control">
-            @foreach (var estado in ViewBag.Estados)
-            {
-                <option value="@estado.Id">@estado.Nombre</option>
-            }
-        </select>
-        <span asp-validation-for="EstadoSolicitudId" class="text-danger"></span>
-    </div>
-
     <div class="mb-3 form-group">
         <label asp-for="EstadoSolicitudId" class="form-label">Cambiar Estado</label>
         <select asp-for="EstadoSolicitudId" class="form-control">
@@ -33,6 +20,14 @@
         <span asp-validation-for="EstadoSolicitudId" class="text-danger"></span>
     </div>
 
+    <!--- Para Lista de Estados   -->
+    <div class="mb-3 form-group">
+        <label asp-for="EstadoSolicitudId" class="form-label">Estado</label>
+        <select class="form-select form-select sm" asp-for="EstadoSolicitudId" asp-items="ViewBag.Estados">
+            <option> --- Seleccionar Estado --- </option>
+        </select>
+        <span asp-validation-for="EstadoSolicitudId" class="text-danger"></span>
+    </div>
 
     <input type="hidden" asp-for="Id" />
 
